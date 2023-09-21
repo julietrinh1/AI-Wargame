@@ -317,9 +317,10 @@ class Game:
         if unit is None or unit.player != self.next_player:
             return False
         unitDest = self.get(coords.dst)
-        # if unitDest.is_empty() is True:
-        #     return True
-        if unit == unitDest:
+        if unitDest.is_empty() is True: 
+            if unitDest.type == UnitType.Virus or UnitType.Tech: #Virus and Tech can move anywhere that is free
+                return True
+        if unit == unitDest: #condition for self destruction
             return True
         return (unitDest is None)
 
