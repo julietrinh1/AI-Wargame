@@ -316,8 +316,10 @@ class Game:
         unit = self.get(coords.src)
         if unit is None or unit.player != self.next_player:
             return False
-        unit = self.get(coords.dst)
-        return (unit is None)
+        unitDest = self.get(coords.dst)
+        if unit == unitDest:
+            return True
+        return (unitDest is None)
 
     def perform_move(self, coords : CoordPair) -> Tuple[bool,str]:
         """Validate and perform a move expressed as a CoordPair. TODO: WRITE MISSING CODE!!!"""
