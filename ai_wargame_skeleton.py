@@ -317,11 +317,8 @@ class Game:
         if unit is None or unit.player != self.next_player:
             return False
         unitDest = self.get(coords.dst)
-<<<<<<< HEAD
         # if unitDest.is_empty() is True:
         #     return True
-=======
->>>>>>> 77bbd16c936dd70915223776f8b436e0aaea3102
         if unit == unitDest:
             return True
         return (unitDest is None)
