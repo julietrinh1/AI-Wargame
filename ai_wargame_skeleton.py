@@ -319,10 +319,11 @@ class Game:
         unitDest = self.get(coords.dst)
         if unit == unitDest: #condition for self destruction
             return True
-        if unitDest.is_empty() is True: 
-            if unitDest.type == UnitType.Virus or UnitType.Tech: #Virus and Tech can move anywhere that is free
-                return True
-        
+        if self.is_empty(coords.dst) is True: 
+            if unit.type == UnitType.Virus or UnitType.Tech: #Virus and Tech can move anywhere that is free
+                return True 
+            if unit.player == Player.Attacker and ( (coords.dst.row == coords.src.row+1) or (coords.dst.col == coords.src.col-1)): #attacker unit Program, Firewall, and Ai can only move up or left
+                return True    
         return (unitDest is None)
 
     def perform_move(self, coords : CoordPair) -> Tuple[bool,str]:
