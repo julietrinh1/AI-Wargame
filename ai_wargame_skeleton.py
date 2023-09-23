@@ -319,12 +319,22 @@ class Game:
         unitDest = self.get(coords.dst)
         if unit == unitDest: #condition for self destruction
             return True
-        if self.is_empty(coords.dst) is True: 
-            if unit.type == UnitType.Virus or UnitType.Tech: #Virus and Tech can move anywhere that is free
-                return True 
-            if unit.player == Player.Attacker and ( (coords.dst.row == coords.src.row+1) or (coords.dst.col == coords.src.col-1)): #attacker unit Program, Firewall, and Ai can only move up or left
-                return True    
-        return (unitDest is None)
+        # Calculate the absolute row and column differences
+        row_diff = abs(coords.dst.row - coords.src.row)
+        col_diff = abs(coords.dst.col - coords.src.col)
+
+        if row_diff + col_diff == 1: #only adjacent move valid
+            if self.is_empty(coords.dst) is True: 
+                if unit.type == UnitType.Virus or unit.type == UnitType.Tech: #Virus and Tech can move anywhere that is free
+                    return True 
+                if unit.player == Player.Attacker: 
+                    if coords.dst.row < coords.src.row or coords.dst.col < coords.src.col: #attacker unit Program, Firewall, and Ai can only move up or left
+                        return True
+                if unit.player == Player.Defender:
+                    if coords.dst.row > coords.src.row or coords.dst.col > coords.src.col: #Defender unit Program, Firewall, and Ai can only move up or left
+                        return True    
+        return False
+        #return (unitDest is None)
 
     def perform_move(self, coords : CoordPair) -> Tuple[bool,str]:
         """Validate and perform a move expressed as a CoordPair. TODO: WRITE MISSING CODE!!!"""
