@@ -332,9 +332,11 @@ class Game:
                         return True
                 if unit.player == Player.Defender:
                     if coords.dst.row > coords.src.row or coords.dst.col > coords.src.col: #Defender unit Program, Firewall, and Ai can only move up or left
-                        return True    
+                        return True
+            # if self.is_empty(coords.dst) is False:    #Condition to allow users to attack
+            #     return True    
         return False
-        #return (unitDest is None)
+
 
     def perform_move(self, coords : CoordPair) -> Tuple[bool,str]:
         """Validate and perform a move expressed as a CoordPair. TODO: WRITE MISSING CODE!!!"""
