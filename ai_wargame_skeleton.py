@@ -309,33 +309,47 @@ class Game:
             target.mod_health(health_delta)
             self.remove_dead(coord)
 
-    def is_valid_move(self, coords : CoordPair) -> bool:
-        """Validate a move expressed as a CoordPair. TODO: WRITE MISSING CODE!!!"""
+    def is_valid_move(self, coords: CoordPair) -> bool:
+        """Validate a move expressed as a CoordPair."""
         if not self.is_valid_coord(coords.src) or not self.is_valid_coord(coords.dst):
             return False
+
         unit = self.get(coords.src)
         if unit is None or unit.player != self.next_player:
             return False
-        unitDest = self.get(coords.dst)
-        if unit == unitDest: #condition for self destruction
+
+        unit_dest = self.get(coords.dst)
+        if unit == unit_dest:  # Condition for self-destruction
             return True
+
         # Calculate the absolute row and column differences
         row_diff = abs(coords.dst.row - coords.src.row)
         col_diff = abs(coords.dst.col - coords.src.col)
 
-        if row_diff + col_diff == 1: #only adjacent move valid
-            if self.is_empty(coords.dst) is True: 
-                if unit.type == UnitType.Virus or unit.type == UnitType.Tech: #Virus and Tech can move anywhere that is free
-                    return True 
-                if unit.player == Player.Attacker: 
-                    if coords.dst.row < coords.src.row or coords.dst.col < coords.src.col: #attacker unit Program, Firewall, and Ai can only move up or left
-                        return True
+        # Check if an adversarial unit is adjacent
+        adversarial_adjacent = any(
+            self.is_valid_coord(adj_coord) and
+            self.get(adj_coord) is not None and
+            self.get(adj_coord).player != unit.player
+            for adj_coord in coords.src.iter_adjacent()
+        )
+
+        if row_diff + col_diff == 1:  # Only adjacent move is valid
+            if self.is_empty(coords.dst) is True:
+                if unit.type == UnitType.Virus or unit.type == UnitType.Tech:
+                    # Virus and Tech can move anywhere that is free
+                    return True
+                if unit.player == Player.Attacker:
+                    if coords.dst.row < coords.src.row or coords.dst.col < coords.src.col:
+                        # Attacker unit Program, Firewall, and AI can only move up or left
+                        return not adversarial_adjacent
                 if unit.player == Player.Defender:
-                    if coords.dst.row > coords.src.row or coords.dst.col > coords.src.col: #Defender unit Program, Firewall, and Ai can only move up or left
-                        return True
-            # if self.is_empty(coords.dst) is False:    #Condition to allow users to attack
-            #     return True    
+                    if coords.dst.row > coords.src.row or coords.dst.col > coords.src.col:
+                        # Defender unit Program, Firewall, and AI can only move down or right
+                        return not adversarial_adjacent
+
         return False
+
 
 
     def perform_move(self, coords : CoordPair) -> Tuple[bool,str]:
