@@ -393,7 +393,15 @@ class Game:
         # Check if the destination coordinate is adjacent to the source coordinate
         return coords.dst in coords.src.iter_adjacent()
 
-
+    def perform_move(self, coords: CoordPair) -> Tuple[bool, str]:
+        if self.is_valid_attack(coords):
+            self.perform_combat(coords.src, coords.dst)
+            return (True, "Attack successful")
+        elif self.is_valid_move(coords):
+            self.set(coords.dst, self.get(coords.src))
+            self.set(coords.src, None)
+            return (True, "Move successful")
+        return (False, "Invalid move")
 
 
     def repair_unit(self, source_coord: Coord, target_coord: Coord) -> Tuple[bool, str]:
