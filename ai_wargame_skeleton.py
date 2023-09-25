@@ -344,7 +344,7 @@ class Game:
             return False
 
         unit_dest = self.get(coords.dst)
-        if unit == unit_dest:  # Condition for self-destruction
+        if self.is_valid_self_destruction(coords):  # Condition for self-destruction
             return True
 
         # Calculate the absolute row and column differences
@@ -392,7 +392,34 @@ class Game:
 
         # Check if the destination coordinate is adjacent to the source coordinate
         return coords.dst in coords.src.iter_adjacent()
+    
+    #check if it is self destruction
+    def is_valid_self_destruction(self, coords: CoordPair) -> bool:
+        src_unit = self.get(coords.src)
+        dst_unit = self.get(coords.dst)
 
+        if src_unit == dst_unit:
+            return True
+        
+        return False
+    
+    #destroys self destructed and inflict -2 damage to surrounding
+    def perform_self_destruction(self, src_coord: Coord):
+        source = self.get(src_coord)
+        self.mod_health(src_coord, -source.health)
+        print(f"{source.player.name} self-destruct at {src_coord}")
+        self.remove_dead(src_coord)
+        number_damages = 0
+        for dst in src_coord.iter_range(1):
+            if self.is_valid_coord(dst):
+                if self.is_empty(dst) is False:
+                    number_damages = number_damages+2
+                    self.mod_health(dst, -2)
+                    # Remove dead units
+                    self.remove_dead(dst)
+
+        print(f"self-destructed for {number_damages} total damages")    
+    
     def perform_move(self, coords: CoordPair) -> Tuple[bool, str]:
         if self.is_valid_attack(coords):
             self.perform_combat(coords.src, coords.dst)
@@ -431,10 +458,15 @@ class Game:
 
     # Modify the perform_move method to handle repair
     def perform_move(self, coords: CoordPair) -> Tuple[bool, str]:
+        src_unit = self.get(coords.src)
+        if self.is_valid_self_destruction(coords):
+            self.perform_self_destruction(coords.src)
+            return True, "Self destruction successful"
         if self.is_valid_attack(coords):
             self.perform_combat(coords.src, coords.dst)
             return True, "Attack successful"
         elif self.is_valid_move(coords):
+            print(f"{src_unit.player.name} move from {coords.src} to {coords.dst}")
             self.set(coords.dst, self.get(coords.src))
             self.set(coords.src, None)
             return True, "Move successful"
