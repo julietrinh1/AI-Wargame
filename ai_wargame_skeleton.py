@@ -393,9 +393,6 @@ class Game:
         # Check if the destination coordinate is adjacent to the source coordinate
         return coords.dst in coords.src.iter_adjacent()
 
-
-
-
     def perform_move(self, coords: CoordPair) -> Tuple[bool, str]:
         if self.is_valid_attack(coords):
             self.perform_combat(coords.src, coords.dst)
@@ -405,6 +402,63 @@ class Game:
             self.set(coords.src, None)
             return (True, "Move successful")
         return (False, "Invalid move")
+
+
+    def repair_unit(self, source_coord: Coord, target_coord: Coord) -> Tuple[bool, str]:
+        source_unit = self.get(source_coord)
+        target_unit = self.get(target_coord)
+
+        # Check if source and target units exist and belong to the same player
+        if source_unit is None or target_unit is None or source_unit.player != target_unit.player:
+            return False, "Invalid repair action."
+
+        # Check if source and target units are adjacent
+        if abs(source_coord.row - target_coord.row) + abs(source_coord.col - target_coord.col) != 1:
+            return False, "Source and target units must be adjacent for repair."
+
+        # Check if the target unit's health is not already at the maximum (9)
+        if target_unit.health == 9:
+            return False, "Target unit's health is already at the maximum."
+
+        # Calculate the amount of health to repair based on unit types
+        repair_amount = source_unit.repair_amount(target_unit)
+        target_unit.mod_health(repair_amount)
+
+        # Remove dead units
+        self.remove_dead(target_coord)
+
+        return True, f"Unit repaired: {target_unit.type.name} at {target_coord}"
+
+    # Modify the perform_move method to handle repair
+    def perform_move(self, coords: CoordPair) -> Tuple[bool, str]:
+        if self.is_valid_attack(coords):
+            self.perform_combat(coords.src, coords.dst)
+            return True, "Attack successful"
+        elif self.is_valid_move(coords):
+            self.set(coords.dst, self.get(coords.src))
+            self.set(coords.src, None)
+            return True, "Move successful"
+        elif self.is_valid_repair(coords):
+            success, result = self.repair_unit(coords.src, coords.dst)
+            return success, result
+        return False, "Invalid move"
+
+    # Add this method to check if a repair action is valid
+    def is_valid_repair(self, coords: CoordPair) -> bool:
+        source_unit = self.get(coords.src)
+        target_unit = self.get(coords.dst)
+
+        if source_unit is None or target_unit is None:
+            return False
+
+        # Check if source and target units are adjacent and belong to the same player
+        if (
+            abs(coords.src.row - coords.dst.row) + abs(coords.src.col - coords.dst.col) == 1
+            and source_unit.player == target_unit.player
+        ):
+            return True
+
+        return False
 
 
     def next_turn(self):
