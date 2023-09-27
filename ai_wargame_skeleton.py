@@ -13,6 +13,8 @@ import requests
 MAX_HEURISTIC_SCORE = 2000000000
 MIN_HEURISTIC_SCORE = -2000000000
 
+output_file_name = "game_trace.txt"
+
 class UnitType(Enum):
     """Every unit type."""
     AI = 0
@@ -730,31 +732,42 @@ def main():
 
     # create a new game
     game = Game(options=options)
-
-    # the main game loop
-    while True:
-        print()
-        print(game)
-        winner = game.has_winner()
-        if winner is not None:
-            print(f"{winner.name} wins!")
-            break
-        if game.options.game_type == GameType.AttackerVsDefender:
-            game.human_turn()
-        elif game.options.game_type == GameType.AttackerVsComp and game.next_player == Player.Attacker:
-            game.human_turn()
-        elif game.options.game_type == GameType.CompVsDefender and game.next_player == Player.Defender:
-            game.human_turn()
-        else:
-            player = game.next_player
-            move = game.computer_turn()
-            if move is not None:
-                game.post_move_to_broker(move)
-            else:
-                print("Computer doesn't know what to do!!!")
-                exit(1)
+    try:
+        with open(output_file_name, 'w') as output_file:
+            output_file.write(str(options) + "\n")
+            # the main game loop
+            while True:
+                print()
+                print(game)
+                
+                # Log the current game state to the output file
+                output_file.write(str(game) + "\n")
+                
+                winner = game.has_winner()
+                if winner is not None:
+                    print(f"{winner.name} wins!")
+                    output_file.close()
+                    break
+                if game.options.game_type == GameType.AttackerVsDefender:
+                    game.human_turn()
+                elif game.options.game_type == GameType.AttackerVsComp and game.next_player == Player.Attacker:
+                    game.human_turn()
+                elif game.options.game_type == GameType.CompVsDefender and game.next_player == Player.Defender:
+                    game.human_turn()
+                else:
+                    player = game.next_player
+                    move = game.computer_turn()
+                    if move is not None:
+                        game.post_move_to_broker(move)
+                    else:
+                        print("Computer doesn't know what to do!!!")
+                        exit(1)
+    finally:
+        if 'output_file' in locals():
+            output_file.close()
 
 ##############################################################################################################
 
 if __name__ == '__main__':
     main()
+    
