@@ -13,7 +13,6 @@ import requests
 MAX_HEURISTIC_SCORE = 2000000000
 MIN_HEURISTIC_SCORE = -2000000000
 
-output_file_name = "game_trace.txt"
 
 class UnitType(Enum):
     """Every unit type."""
@@ -329,7 +328,8 @@ class Game:
         # Update unit health based on damage
         self.mod_health(attacker_coord, -defender_damage)
         self.mod_health(defender_coord, -attacker_damage)
-
+        print(f" Attack from {attacker.player.name} move from {attacker_coord} to {defender_coord}")
+        output_file.write(f" Attack {attacker.player.name} from {attacker_coord} to {defender_coord}" + "\n")
         # Check if units are destroyed and remove them from the board
         if not attacker.is_alive():
             self.set(attacker_coord, None)
@@ -410,6 +410,8 @@ class Game:
         source = self.get(src_coord)
         self.mod_health(src_coord, -source.health)
         print(f"{source.player.name} self-destruct at {src_coord}")
+        output_file.write(f"{source.player.name} self-destruct at {src_coord}" + "\n")
+
         self.remove_dead(src_coord)
         number_damages = 0
         for dst in src_coord.iter_range(1):
@@ -455,7 +457,7 @@ class Game:
 
         # Remove dead units
         self.remove_dead(target_coord)
-
+        output_file.write(f"Unit repaired: {target_unit.type.name} at {target_coord}" + "\n")
         return True, f"Unit repaired: {target_unit.type.name} at {target_coord}"
 
     # Modify the perform_move method to handle repair
@@ -469,6 +471,7 @@ class Game:
             return True, "Attack successful"
         elif self.is_valid_move(coords):
             print(f"{src_unit.player.name} move from {coords.src} to {coords.dst}")
+            output_file.write(f"{src_unit.player.name} move from {coords.src} to {coords.dst}" + "\n")
             self.set(coords.dst, self.get(coords.src))
             self.set(coords.src, None)
             return True, "Move successful"
@@ -699,6 +702,7 @@ class Game:
 ##############################################################################################################
 
 def main():
+    
     # parse command line arguments
     parser = argparse.ArgumentParser(
         prog='ai_wargame',
@@ -733,7 +737,10 @@ def main():
     # create a new game
     game = Game(options=options)
     try:
-        with open(output_file_name, 'w') as output_file:
+        
+            global output_file  # Declare the global variable
+            # Open the output file in the main function
+            output_file = open("gameTrace.txt", "w")
             output_file.write(str(options) + "\n")
             # the main game loop
             while True:
@@ -746,6 +753,7 @@ def main():
                 winner = game.has_winner()
                 if winner is not None:
                     print(f"{winner.name} wins!")
+                    output_file.write(f"{winner.name} wins in {game.turns_played} turns" + "\n")
                     output_file.close()
                     break
                 if game.options.game_type == GameType.AttackerVsDefender:
