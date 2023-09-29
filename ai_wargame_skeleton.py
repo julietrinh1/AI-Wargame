@@ -740,7 +740,7 @@ def main():
         
             global output_file  # Declare the global variable
             # Open the output file in the main function
-            output_file = open("gameTrace.txt", "w")
+            output_file = open(f"gameTrace-{options.alpha_beta}-{options.max_time}-{options.max_turns}.txt", "w")
             output_file.write(str(options) + "\n")
             # the main game loop
             while True:
