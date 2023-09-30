@@ -703,6 +703,12 @@ class Game:
 
 def main():
     
+    # Prompt the user for the maximum time per turn
+    max_time = float(input("Enter the maximum time (in seconds) the program should take per turn: "))
+
+    # Prompt the user for the maximum number of turns before the end of the game
+    max_turns = int(input("Enter the maximum number of turns before the end of the game: "))
+
     # parse command line arguments
     parser = argparse.ArgumentParser(
         prog='ai_wargame',
@@ -725,6 +731,7 @@ def main():
 
     # set up game options
     options = Options(game_type=game_type)
+    options = Options(game_type=game_type, max_time=max_time, max_turns=max_turns)
 
     # override class defaults via command line options
     if args.max_depth is not None:
@@ -749,11 +756,14 @@ def main():
                 
                 # Log the current game state to the output file
                 output_file.write(str(game) + "\n")
-                
+                output_file.write("####################################" + "\n")
                 winner = game.has_winner()
                 if winner is not None:
                     print(f"{winner.name} wins!")
                     output_file.write(f"{winner.name} wins in {game.turns_played} turns" + "\n")
+                    # Write the timeout value (t) and maximum number of turns to the file
+                    output_file.write(f"Value of Timeout (s): {options.max_time} seconds\n")
+                    output_file.write(f"Maximum number of turns: {options.max_turns}\n")
                     output_file.close()
                     break
                 if game.options.game_type == GameType.AttackerVsDefender:
@@ -778,4 +788,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-    
