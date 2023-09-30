@@ -328,7 +328,7 @@ class Game:
         # Update unit health based on damage
         self.mod_health(attacker_coord, -defender_damage)
         self.mod_health(defender_coord, -attacker_damage)
-        print(f" Attack from {attacker.player.name} move from {attacker_coord} to {defender_coord}")
+        print(f" Attack from {attacker.player.name} from {attacker_coord} to {defender_coord}")
         output_file.write(f" Attack {attacker.player.name} from {attacker_coord} to {defender_coord}" + "\n")
         # Check if units are destroyed and remove them from the board
         if not attacker.is_alive():
@@ -399,7 +399,8 @@ class Game:
     def is_valid_self_destruction(self, coords: CoordPair) -> bool:
         src_unit = self.get(coords.src)
         dst_unit = self.get(coords.dst)
-
+        if self.is_empty(coords.src) is True:
+            return False
         if src_unit == dst_unit:
             return True
         
