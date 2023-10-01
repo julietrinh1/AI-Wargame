@@ -704,11 +704,21 @@ class Game:
 
 def main():
     
-    # Prompt the user for the maximum time per turn
-    max_time = float(input("Enter the maximum time (in seconds) the program should take per turn: "))
+    while True:
+        # Prompt the user for the maximum time per turn
+        max_time = float(input("Enter the maximum time (in seconds) the program should take per turn: "))
+        if max_time <= 0:
+            print("Please enter a positive value for maximum time.")
+        else:
+            break
 
-    # Prompt the user for the maximum number of turns before the end of the game
-    max_turns = int(input("Enter the maximum number of turns before the end of the game: "))
+    while True:
+        # Prompt the user for the maximum number of turns before the end of the game
+        max_turns = int(input("Enter the maximum number of turns before the end of the game: "))
+        if max_turns <= 0:
+            print("Please enter a positive value for maximum turns.")
+        else:
+            break
 
     # parse command line arguments
     parser = argparse.ArgumentParser(
