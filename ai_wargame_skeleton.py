@@ -13,7 +13,7 @@ import requests
 MAX_HEURISTIC_SCORE = 2000000000
 MIN_HEURISTIC_SCORE = -2000000000
 
-
+# every type of player 
 class UnitType(Enum):
     """Every unit type."""
     AI = 0
@@ -21,7 +21,7 @@ class UnitType(Enum):
     Virus = 2
     Program = 3
     Firewall = 4
-
+#defines two players, who plays next 
 class Player(Enum):
     """The 2 players."""
     Attacker = 0
@@ -33,7 +33,7 @@ class Player(Enum):
             return Player.Defender
         else:
             return Player.Attacker
-
+#scenarios of the game 
 class GameType(Enum):
     AttackerVsDefender = 0
     AttackerVsComp = 1
@@ -45,7 +45,7 @@ class GameType(Enum):
 @dataclass(slots=True)
 class Unit:
     player: Player = Player.Attacker
-    type: UnitType = UnitType.Program
+    type: UnitType = UnitType.Program 
     health : int = 9
     # class variable: damage table for units (based on the unit type constants in order)
     damage_table : ClassVar[list[list[int]]] = [
@@ -63,11 +63,11 @@ class Unit:
         [0,0,0,0,0], # Program
         [0,0,0,0,0], # Firewall
     ]
-
+    # check if unit is alive based on health
     def is_alive(self) -> bool:
         """Are we alive ?"""
         return self.health > 0
-
+    #makes sure health stays in range of 0-9 nothing below or hugher
     def mod_health(self, health_delta : int):
         """Modify this unit's health by delta amount."""
         self.health += health_delta
@@ -75,7 +75,7 @@ class Unit:
             self.health = 0
         elif self.health > 9:
             self.health = 9
-
+    #does naming of units
     def to_string(self) -> str:
         """Text representation of this unit."""
         p = self.player.name.lower()[0]
@@ -85,14 +85,14 @@ class Unit:
     def __str__(self) -> str:
         """Text representation of this unit."""
         return self.to_string()
-    
+    #returns damage without exceeding remaining health
     def damage_amount(self, target: Unit) -> int:
         """How much can this unit damage another unit."""
         amount = self.damage_table[self.type.value][target.type.value]
         if target.health - amount < 0:
             return target.health
         return amount
-
+    #returning it without exceeding max health 
     def repair_amount(self, target: Unit) -> int:
         """How much can this unit repair another unit."""
         amount = self.repair_table[self.type.value][target.type.value]
@@ -139,7 +139,7 @@ class Coord:
         for row in range(self.row-dist,self.row+1+dist):
             for col in range(self.col-dist,self.col+1+dist):
                 yield Coord(row,col)
-
+    #generates the up down left left
     def iter_adjacent(self) -> Iterable[Coord]:
         """Iterates over adjacent Coords."""
         yield Coord(self.row-1,self.col)
@@ -219,10 +219,10 @@ class CoordPair:
 class Options:
     """Representation of the game options."""
     dim: int = 5
-    max_depth : int | None = 4
+    max_depth : int | None = 4 #max depth of game tree 
     min_depth : int | None = 2
-    max_time : float | None = 5.0
-    game_type : GameType = GameType.AttackerVsDefender
+    max_time : float | None = 5.0 #of each turn 
+    game_type : GameType = GameType.AttackerVsDefender #humanvshuman
     alpha_beta : bool = True
     max_turns : int | None = 100
     randomize_moves : bool = True
@@ -233,7 +233,7 @@ class Options:
 @dataclass(slots=True)
 class Stats:
     """Representation of the global game statistics."""
-    evaluations_per_depth : dict[int,int] = field(default_factory=dict)
+    evaluations_per_depth : dict[int,int] = field(default_factory=dict) #stores the number of evaluations performed at each search depth in the game tree
     total_seconds: float = 0.0
 
 ##############################################################################################################
@@ -242,8 +242,8 @@ class Stats:
 class Game:
     """Representation of the game state."""
     board: list[list[Unit | None]] = field(default_factory=list)
-    next_player: Player = Player.Attacker
-    turns_played : int = 0
+    next_player: Player = Player.Attacker #attacker first
+    turns_played : int = 0 #keep track of turns 
     options: Options = field(default_factory=Options)
     stats: Stats = field(default_factory=Stats)
     _attacker_has_ai : bool = True
@@ -291,7 +291,7 @@ class Game:
         """Set contents of a board cell of the game at Coord."""
         if self.is_valid_coord(coord):
             self.board[coord.row][coord.col] = unit
-
+    #check that theres a unit at coord, then health, then empties
     def remove_dead(self, coord: Coord):
         """Remove unit at Coord if dead."""
         unit = self.get(coord)
@@ -302,7 +302,7 @@ class Game:
                     self._attacker_has_ai = False
                 else:
                     self._defender_has_ai = False
-
+    #sees the coord, checks it unit there, sees its health, calls mod health to modify, sees if it needs to be removed
     def mod_health(self, coord : Coord, health_delta : int):
         """Modify health of unit at Coord (positive or negative delta)."""
         target = self.get(coord)
@@ -311,13 +311,13 @@ class Game:
             self.remove_dead(coord)
 
     def perform_combat(self, attacker_coord: Coord, defender_coord: Coord):
-        attacker = self.get(attacker_coord)
+        attacker = self.get(attacker_coord) #get coords
         defender = self.get(defender_coord)
-
+        #if unit is missing , no action performed 
         if attacker is None or defender is None:
             return
 
-        # Check if the units belong to different players
+        # Check if the units belong to different players, combat not allowed for same
         if attacker.player == defender.player:
             return
 
@@ -339,12 +339,12 @@ class Game:
     def is_valid_move(self, coords: CoordPair) -> bool:
         """Validate a move expressed as a CoordPair."""
         if not self.is_valid_coord(coords.src) or not self.is_valid_coord(coords.dst):
-            return False
-
+            return False # checks is src or dst is valid, if not false
+        #retrieves unit, , checks if it is missing or not the same as next player
         unit = self.get(coords.src)
         if unit is None or unit.player != self.next_player:
             return False
-
+        #checks is if it is destructive
         unit_dest = self.get(coords.dst)
         if self.is_valid_self_destruction(coords):  # Condition for self-destruction
             return True
@@ -361,8 +361,8 @@ class Game:
             for adj_coord in coords.src.iter_adjacent()
         )
 
-        if row_diff + col_diff == 1:  # Only adjacent move is valid
-            if self.is_empty(coords.dst) is True:
+        if row_diff + col_diff == 1:  # Only adjacent move is valid, diff=1  means it is up down left or right
+            if self.is_empty(coords.dst) is True: # check is dst is empty 
                 if unit.type == UnitType.Virus or unit.type == UnitType.Tech:
                     # Virus and Tech can move anywhere that is free
                     return True
@@ -373,7 +373,7 @@ class Game:
                 if unit.player == Player.Defender:
                     if coords.dst.row > coords.src.row or coords.dst.col > coords.src.col:
                         # Defender unit Program, Firewall, and AI can only move down or right
-                        return not adversarial_adjacent
+                        return not adversarial_adjacent #return if it is empty and no aversary there
 
         # Allow an attack move if it meets the conditions
         if self.is_valid_attack(coords):
@@ -383,25 +383,25 @@ class Game:
 
     def is_valid_attack(self, coords: CoordPair) -> bool:
         # Check if it's a valid attack move
-        src_unit = self.get(coords.src)
+        src_unit = self.get(coords.src) #get coords
         dst_unit = self.get(coords.dst)
-
+        #if either doesnt exist return false
         if src_unit is None or dst_unit is None:
             return False
-
+        #if they belong to same player it cannot go on
         if src_unit.player == dst_unit.player:
             return False
 
-        # Check if the destination coordinate is adjacent to the source coordinate
+        # Check if the destination coordinate is adjacent to the source coordinate, if so returns true
         return coords.dst in coords.src.iter_adjacent()
     
     #check if it is self destruction
     def is_valid_self_destruction(self, coords: CoordPair) -> bool:
         src_unit = self.get(coords.src)
         dst_unit = self.get(coords.dst)
-        if self.is_empty(coords.src) is True:
+        if self.is_empty(coords.src) is True: #if src is empty, false
             return False
-        if src_unit == dst_unit:
+        if src_unit == dst_unit: #if source and dest are same , true
             return True
         
         return False
@@ -409,15 +409,15 @@ class Game:
     #destroys self destructed and inflict -2 damage to surrounding
     def perform_self_destruction(self, src_coord: Coord):
         source = self.get(src_coord)
-        self.mod_health(src_coord, -source.health)
+        self.mod_health(src_coord, -source.health)#minus source health by source health 
         print(f"{source.player.name} self-destruct at {src_coord}")
         output_file.write(f"{source.player.name} self-destruct at {src_coord}" + "\n")
-
+        #to remove the unit
         self.remove_dead(src_coord)
         number_damages = 0
-        for dst in src_coord.iter_range(1):
-            if self.is_valid_coord(dst):
-                if self.is_empty(dst) is False:
+        for dst in src_coord.iter_range(1):# checks cells with diff of 1 from source
+            if self.is_valid_coord(dst): #if dest is within board
+                if self.is_empty(dst) is False: #check that there is something there
                     number_damages = number_damages+2
                     self.mod_health(dst, -2)
                     # Remove dead units
@@ -426,14 +426,14 @@ class Game:
         print(f"self-destructed for {number_damages} total damages")    
     
     def perform_move(self, coords: CoordPair) -> Tuple[bool, str]:
-        if self.is_valid_attack(coords):
-            self.perform_combat(coords.src, coords.dst)
+        if self.is_valid_attack(coords): #check if valid attack
+            self.perform_combat(coords.src, coords.dst) #is so make combat
             return (True, "Attack successful")
-        elif self.is_valid_move(coords):
+        elif self.is_valid_move(coords): #checks if stead it can move
             self.set(coords.dst, self.get(coords.src))
             self.set(coords.src, None)
             return (True, "Move successful")
-        return (False, "Invalid move")
+        return (False, "Invalid move") #otherwise invaid
 
 
     def repair_unit(self, source_coord: Coord, target_coord: Coord) -> Tuple[bool, str]:
@@ -444,7 +444,7 @@ class Game:
         if source_unit is None or target_unit is None or source_unit.player != target_unit.player:
             return False, "Invalid repair action."
 
-        # Check if source and target units are adjacent
+        # Check if source and target units are adjacent, diff=1
         if abs(source_coord.row - target_coord.row) + abs(source_coord.col - target_coord.col) != 1:
             return False, "Source and target units must be adjacent for repair."
 
@@ -453,11 +453,11 @@ class Game:
             return False, "Target unit's health is already at the maximum."
 
         # Calculate the amount of health to repair based on unit types
-        repair_amount = source_unit.repair_amount(target_unit)
-        target_unit.mod_health(repair_amount)
+        repair_amount = source_unit.repair_amount(target_unit) #check repair amount it could make
+        target_unit.mod_health(repair_amount) #mod health to that amount
 
-        # Remove dead units
-        self.remove_dead(target_coord)
+        # Remove dead units if there are in target, and say what is repaired
+        self.remove_dead(target_coord) 
         output_file.write(f"Unit repaired: {target_unit.type.name} at {target_coord}" + "\n")
         return True, f"Unit repaired: {target_unit.type.name} at {target_coord}"
 
@@ -473,11 +473,11 @@ class Game:
         elif self.is_valid_move(coords):
             print(f"{src_unit.player.name} move from {coords.src} to {coords.dst}")
             output_file.write(f"{src_unit.player.name} move from {coords.src} to {coords.dst}" + "\n")
-            self.set(coords.dst, self.get(coords.src))
-            self.set(coords.src, None)
+            self.set(coords.dst, self.get(coords.src)) #set new coords
+            self.set(coords.src, None) #empty source
             return True, "Move successful"
         elif self.is_valid_repair(coords):
-            success, result = self.repair_unit(coords.src, coords.dst)
+            success, result = self.repair_unit(coords.src, coords.dst) #stores result
             return success, result
         return False, "Invalid move"
 
