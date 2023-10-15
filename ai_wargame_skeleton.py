@@ -239,6 +239,20 @@ class Stats:
 ##############################################################################################################
 class Heuristics:
     @staticmethod
+    def e0(game, player):
+        """
+        Heuristic function e0.
+        Custom heuristic based on player statistics.
+        """
+        VP = game.count_virus(player)
+        TP = game.count_tech(player)
+        FP = game.count_firewall(player)
+        PP = game.count_program(player)
+        AIP = game.count_ai(player)
+
+        return (3 * (VP + TP + FP + PP) + 9999 * AIP)
+
+    @staticmethod
     def e1(game, player):
         """
         Heuristic function e1.
@@ -262,6 +276,7 @@ class Heuristics:
         else:
             safe_moves = len(game.get_safe_defender_moves())
         return safe_moves
+
 
 ##############################################################################################################
 
