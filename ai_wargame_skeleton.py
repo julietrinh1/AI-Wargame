@@ -693,29 +693,31 @@ class Game:
         return move
     
     def minimax(self, node: Game, depth: int, alpha: int, beta: int, maximizing_player: bool) -> Tuple[int, CoordPair | None]:
-        if depth == 0 or node.is_finished():
-            score = self.evaluate(node)
-            return score, None
+         # Base case: if reached maximum depth or game is finished, evaluate the node
+        if depth == 0 or node.is_finished(): 
+            score = self.evaluate(node) # Evaluate the current game state
+            return score, None  # Return the score and no move (leaf node)
 
         move_candidates = list(node.move_candidates())
         random.shuffle(move_candidates)  # Shuffle for better randomness
         if maximizing_player:
-            max_score = MIN_HEURISTIC_SCORE
+            max_score = MIN_HEURISTIC_SCORE # Initialize max_score to negative infinity
             best_move = None
             for move in move_candidates:
-                child_node = node.clone()
-                (success, _) = child_node.perform_move(move)
+                child_node = node.clone() # Create a clone of the current node
+                (success, _) = child_node.perform_move(move) 
                 if success:
+                     # Recur with the child node, reducing depth, and switching player
                     child_score, _ = self.minimax(child_node, depth - 1, alpha, beta, False)
                     if child_score > max_score:
                         max_score = child_score
                         best_move = move
-                    alpha = max(alpha, max_score)
+                    alpha = max(alpha, max_score) # Update alpha with max_score
                     if beta <= alpha:
-                        break  # Beta cut-off
-            return max_score, best_move
+                        break  # Beta cut-off, prune the search tree
+            return max_score, best_move # Return the maximum score and the corresponding move
         else:
-            min_score = MAX_HEURISTIC_SCORE
+            min_score = MAX_HEURISTIC_SCORE 
             best_move = None
             for move in move_candidates:
                 child_node = node.clone()
@@ -727,7 +729,7 @@ class Game:
                         best_move = move
                     beta = min(beta, min_score)
                     if beta <= alpha:
-                        break  # Alpha cut-off
+                        break  # Alpha cut-off, prune the search tree
             return min_score, best_move
 
     def post_move_to_broker(self, move: CoordPair):
