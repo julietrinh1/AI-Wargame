@@ -702,6 +702,26 @@ class Game:
 ##############################################################################################################
 
 def main():
+
+    print("Choose the play mode:")
+    print("1. H-H (Human vs Human)")
+    print("2. H-AI (Human vs AI)")
+    print("3. AI-H (AI vs Human)")
+    print("4. AI-AI (AI vs AI)")
+
+    choice = input("Enter the number of your choice: ").strip()
+    while choice not in ['1', '2', '3', '4']:
+        print("Please enter a valid choice (1, 2, 3, or 4).")
+        choice = input("Enter the number of your choice: ").strip()
+
+    if choice == '1':
+        game_type = GameType.AttackerVsDefender  # H-H
+    elif choice == '2':
+        game_type = GameType.AttackerVsComp  # H-AI
+    elif choice == '3':
+        game_type = GameType.CompVsDefender  # AI-H
+    else:
+        game_type = GameType.CompVsComp  # AI-AI
     
     while True:
         # Prompt the user for the maximum time per turn
