@@ -691,6 +691,44 @@ class Game:
             print(f"Eval perf.: {total_evals/self.stats.total_seconds/1000:0.1f}k/s")
         print(f"Elapsed time: {elapsed_seconds:0.1f}s")
         return move
+    
+    def minimax(self, node: Game, depth: int, alpha: int, beta: int, maximizing_player: bool) -> Tuple[int, CoordPair | None]:
+        if depth == 0 or node.is_finished():
+            score = self.evaluate(node)
+            return score, None
+
+        move_candidates = list(node.move_candidates())
+        random.shuffle(move_candidates)  # Shuffle for better randomness
+        if maximizing_player:
+            max_score = MIN_HEURISTIC_SCORE
+            best_move = None
+            for move in move_candidates:
+                child_node = node.clone()
+                (success, _) = child_node.perform_move(move)
+                if success:
+                    child_score, _ = self.minimax(child_node, depth - 1, alpha, beta, False)
+                    if child_score > max_score:
+                        max_score = child_score
+                        best_move = move
+                    alpha = max(alpha, max_score)
+                    if beta <= alpha:
+                        break  # Beta cut-off
+            return max_score, best_move
+        else:
+            min_score = MAX_HEURISTIC_SCORE
+            best_move = None
+            for move in move_candidates:
+                child_node = node.clone()
+                (success, _) = child_node.perform_move(move)
+                if success:
+                    child_score, _ = self.minimax(child_node, depth - 1, alpha, beta, True)
+                    if child_score < min_score:
+                        min_score = child_score
+                        best_move = move
+                    beta = min(beta, min_score)
+                    if beta <= alpha:
+                        break  # Alpha cut-off
+            return min_score, best_move
 
     def post_move_to_broker(self, move: CoordPair):
         """Send a move to the game broker."""
