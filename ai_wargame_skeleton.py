@@ -237,6 +237,33 @@ class Stats:
     total_seconds: float = 0.0
 
 ##############################################################################################################
+class Heuristics:
+    @staticmethod
+    def e1(game, player):
+        """
+        Heuristic function e1.
+        This heuristic evaluates the game state based on the difference in the number of pieces.
+        """
+        attacker_pieces = game.count_pieces(Player.Attacker)
+        defender_pieces = game.count_pieces(Player.Defender)
+        if player == Player.Attacker:
+            return attacker_pieces - defender_pieces
+        else:
+            return defender_pieces - attacker_pieces
+
+    @staticmethod
+    def e2(game, player):
+        """
+        Heuristic function e2.
+        This heuristic evaluates the game state based on the number of safe moves for the player.
+        """
+        if player == Player.Attacker:
+            safe_moves = len(game.get_safe_attacker_moves())
+        else:
+            safe_moves = len(game.get_safe_defender_moves())
+        return safe_moves
+
+##############################################################################################################
 
 @dataclass(slots=True)
 class Game:
