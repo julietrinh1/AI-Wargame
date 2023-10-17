@@ -237,6 +237,48 @@ class Stats:
     total_seconds: float = 0.0
 
 ##############################################################################################################
+class Heuristics:
+    @staticmethod
+    def e0(game, player):
+        """
+        Heuristic function e0.
+        Custom heuristic based on player statistics.
+        """
+        VP = game.count_virus(player)
+        TP = game.count_tech(player)
+        FP = game.count_firewall(player)
+        PP = game.count_program(player)
+        AIP = game.count_ai(player)
+
+        return (3 * (VP + TP + FP + PP) + 9999 * AIP)
+
+    @staticmethod
+    def e1(game, player):
+        """
+        Heuristic function e1.
+        This heuristic evaluates the game state based on the difference in the number of pieces.
+        """
+        attacker_pieces = game.count_pieces(Player.Attacker)
+        defender_pieces = game.count_pieces(Player.Defender)
+        if player == Player.Attacker:
+            return attacker_pieces - defender_pieces
+        else:
+            return defender_pieces - attacker_pieces
+
+    @staticmethod
+    def e2(game, player):
+        """
+        Heuristic function e2.
+        This heuristic evaluates the game state based on the number of safe moves for the player.
+        """
+        if player == Player.Attacker:
+            safe_moves = len(game.get_safe_attacker_moves())
+        else:
+            safe_moves = len(game.get_safe_defender_moves())
+        return safe_moves
+
+
+##############################################################################################################
 
 @dataclass(slots=True)
 class Game:
@@ -702,6 +744,26 @@ class Game:
 ##############################################################################################################
 
 def main():
+
+    print("Choose the play mode:")
+    print("1. H-H (Human vs Human)")
+    print("2. H-AI (Human vs AI)")
+    print("3. AI-H (AI vs Human)")
+    print("4. AI-AI (AI vs AI)")
+
+    choice = input("Enter the number of your choice: ").strip()
+    while choice not in ['1', '2', '3', '4']:
+        print("Please enter a valid choice (1, 2, 3, or 4).")
+        choice = input("Enter the number of your choice: ").strip()
+
+    if choice == '1':
+        game_type = GameType.AttackerVsDefender  # H-H
+    elif choice == '2':
+        game_type = GameType.AttackerVsComp  # H-AI
+    elif choice == '3':
+        game_type = GameType.CompVsDefender  # AI-H
+    else:
+        game_type = GameType.CompVsComp  # AI-AI
     
     while True:
         # Prompt the user for the maximum time per turn
