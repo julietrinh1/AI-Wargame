@@ -227,6 +227,7 @@ class Options:
     max_turns : int | None = 100
     randomize_moves : bool = True
     broker : str | None = None
+    heuristic: str | None = None  # Add the heuristic argument
 
 ##############################################################################################################
 
@@ -784,7 +785,6 @@ class Game:
 ##############################################################################################################
 
 def main():
-
     print("Choose the play mode:")
     print("1. H-H (Human vs Human)")
     print("2. H-AI (Human vs AI)")
@@ -821,7 +821,24 @@ def main():
         else:
             break
 
-    # parse command line arguments
+    # Parse the heuristic choice
+    print("Choose a heuristic:")
+    print("1. Heuristic e0")
+    print("2. Heuristic e1")
+    print("3. Heuristic e2")
+    heuristic_choice = input("Enter the number of your chosen heuristic: ").strip()
+
+    # Define a mapping from user's choice to Heuristics class attributes
+    heuristic_mapping = {
+        '1': Heuristics.e0,
+        '2': Heuristics.e1,
+        '3': Heuristics.e2,
+    }
+
+    # Select the heuristic based on the user's choice
+    selected_heuristic = heuristic_mapping.get(heuristic_choice)
+
+    # Parse command line arguments
     parser = argparse.ArgumentParser(
         prog='ai_wargame',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
@@ -831,21 +848,11 @@ def main():
     parser.add_argument('--broker', type=str, help='play via a game broker')
     args = parser.parse_args()
 
-    # parse the game type
-    if args.game_type == "attacker":
-        game_type = GameType.AttackerVsComp
-    elif args.game_type == "defender":
-        game_type = GameType.CompVsDefender
-    elif args.game_type == "manual":
-        game_type = GameType.AttackerVsDefender
-    else:
-        game_type = GameType.CompVsComp
+    # Set up game options
+    options = Options(game_type=game_type, heuristic=selected_heuristic)
+    options = Options(game_type=game_type, max_time=max_time, max_turns=max_turns, heuristic=selected_heuristic)
 
-    # set up game options
-    options = Options(game_type=game_type)
-    options = Options(game_type=game_type, max_time=max_time, max_turns=max_turns)
-
-    # override class defaults via command line options
+    # Override class defaults via command line options
     if args.max_depth is not None:
         options.max_depth = args.max_depth
     if args.max_time is not None:
@@ -853,50 +860,47 @@ def main():
     if args.broker is not None:
         options.broker = args.broker
 
-    # create a new game
+    # Create a new game
     game = Game(options=options)
     try:
-        
-            global output_file  # Declare the global variable
-            # Open the output file in the main function
-            output_file = open(f"gameTrace-{options.alpha_beta}-{options.max_time}-{options.max_turns}.txt", "w")
-            output_file.write(str(options) + "\n")
-            # the main game loop
-            while True:
-                print()
-                print(game)
-                
-                # Log the current game state to the output file
-                output_file.write(str(game) + "\n")
-                output_file.write("####################################" + "\n")
-                winner = game.has_winner()
-                if winner is not None:
-                    print(f"{winner.name} wins!")
-                    output_file.write(f"{winner.name} wins in {game.turns_played} turns" + "\n")
-                    # Write the timeout value (t) and maximum number of turns to the file
-                    output_file.write(f"Value of Timeout (s): {options.max_time} seconds\n")
-                    output_file.write(f"Maximum number of turns: {options.max_turns}\n")
-                    output_file.close()
-                    break
-                if game.options.game_type == GameType.AttackerVsDefender:
-                    game.human_turn()
-                elif game.options.game_type == GameType.AttackerVsComp and game.next_player == Player.Attacker:
-                    game.human_turn()
-                elif game.options.game_type == GameType.CompVsDefender and game.next_player == Player.Defender:
-                    game.human_turn()
+        global output_file
+        output_file = open(f"gameTrace-{options.alpha_beta}-{options.max_time}-{options.max_turns}-{selected_heuristic.__name__}.txt", "w")
+        output_file.write(str(options) + "\n")
+
+        # The main game loop
+        while True:
+            print()
+            print(game)
+            
+            # Log the current game state to the output file
+            output_file.write(str(game) + "\n")
+            output_file.write("####################################" + "\n")
+            winner = game.has_winner()
+            if winner is not None:
+                print(f"{winner.name} wins!")
+                output_file.write(f"{winner.name} wins in {game.turns_played} turns" + "\n")
+                # Write the timeout value (t) and maximum number of turns to the file
+                output_file.write(f"Value of Timeout (s): {options.max_time} seconds\n")
+                output_file.write(f"Maximum number of turns: {options.max_turns}\n")
+                output_file.close()
+                break
+            if game.options.game_type == GameType.AttackerVsDefender:
+                game.human_turn()
+            elif game.options.game_type == GameType.AttackerVsComp and game.next_player == Player.Attacker:
+                game.human_turn()
+            elif game.options.game_type == GameType.CompVsDefender and game.next_player == Player.Defender:
+                game.human_turn()
+            else:
+                player = game.next_player
+                move = game.computer_turn()
+                if move is not None:
+                    game.post_move_to_broker(move)
                 else:
-                    player = game.next_player
-                    move = game.computer_turn()
-                    if move is not None:
-                        game.post_move_to_broker(move)
-                    else:
-                        print("Computer doesn't know what to do!!!")
-                        exit(1)
+                    print("Computer doesn't know what to do!!!")
+                    exit(1)
     finally:
         if 'output_file' in locals():
             output_file.close()
-
-##############################################################################################################
 
 if __name__ == '__main__':
     main()
