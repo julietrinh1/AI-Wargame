@@ -277,6 +277,23 @@ class Heuristics:
         else:
             safe_moves = len(game.get_safe_defender_moves())
         return safe_moves
+    
+    # def e3(game):
+    #     # Number of alive units belonging to the attacker player
+    #     attacker_units = sum(1 for _, unit in game.player_units(Player.Attacker) if unit.is_alive())
+
+    #     # Number of alive units belonging to the defender player
+    #     defender_units = sum(1 for _, unit in game.player_units(Player.Defender) if unit.is_alive())
+
+    #     # The total health of alive units for the attacker player
+    #     attacker_health = sum(unit.health for _, unit in game.player_units(Player.Attacker) if unit.is_alive())
+
+    #     # The total health of alive units for the defender player
+    #     defender_health = sum(unit.health for _, unit in game.player_units(Player.Defender) if unit.is_alive())
+
+    #     # The heuristic value is a weighted sum of unit count and total health difference
+    #     return 2 * (attacker_units - defender_units) + 0.5 * (attacker_health - defender_health)
+
 
 
 ##############################################################################################################
@@ -834,6 +851,16 @@ def main():
         '2': Heuristics.e1,
         '3': Heuristics.e2,
     }
+    # Prompt the user for the choice between Minimax (False) and Alpha-Beta (True)
+    alpha_beta_choice = input("Choose the search algorithm (Minimax: 0, Alpha-Beta: 1): ").strip()
+    while alpha_beta_choice not in ['0', '1']:
+        print("Please enter a valid choice (0 for Minimax or 1 for Alpha-Beta).")
+        alpha_beta_choice = input("Choose the search algorithm (Minimax: 0, Alpha-Beta: 1): ").strip()
+
+    if alpha_beta_choice == '0':
+        alpha_beta = False  # Minimax
+    else:
+        alpha_beta = True  # Alpha-Beta
 
     # Select the heuristic based on the user's choice
     selected_heuristic = heuristic_mapping.get(heuristic_choice)
