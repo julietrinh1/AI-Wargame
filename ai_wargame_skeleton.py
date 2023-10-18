@@ -692,28 +692,71 @@ class Game:
         else:
             return (0, None, 0)
 
+    # def suggest_move(self) -> CoordPair | None:
+    #     """Suggest the next move using minimax alpha beta. TODO: REPLACE RANDOM_MOVE WITH PROPER GAME LOGIC!!!"""
+    #     start_time = datetime.now()
+    #     (score, move, avg_depth) = self.random_move()
+    #     #depth = self.options.max_depth
+    #     #(score, move) = self.alpha_beta(self, depth, MIN_HEURISTIC_SCORE, MAX_HEURISTIC_SCORE, True)
+    #     elapsed_seconds = (datetime.now() - start_time).total_seconds()
+    #     self.stats.total_seconds += elapsed_seconds
+    #     print(f"Heuristic score: {score}")
+    #     #print(f"Average recursive depth: {avg_depth:0.1f}")
+    #     print(f"Evals per depth: ",end='')
+    #     for k in sorted(self.stats.evaluations_per_depth.keys()):
+    #         print(f"{k}:{self.stats.evaluations_per_depth[k]} ",end='')
+    #     print()
+    #     total_evals = sum(self.stats.evaluations_per_depth.values())
+    #     if self.stats.total_seconds > 0:
+    #         print(f"Eval perf.: {total_evals/self.stats.total_seconds/1000:0.1f}k/s")
+    #     print(f"Elapsed time: {elapsed_seconds:0.1f}s")
+    #     return move
+    
+    def minimax(self, depth: int, maximizing_player: bool) -> Tuple[int, CoordPair | None]:
+        if depth == 0 or self.is_finished():
+            score = self.options.heuristic(self, self.next_player)
+            return score, None
+
+        move_candidates = list(self.move_candidates())
+
+        if maximizing_player:
+            max_score = MIN_HEURISTIC_SCORE
+            best_move = None
+            for move in move_candidates:
+                child_node = self.clone()
+                (success, _) = child_node.perform_move(move)
+                if success:
+                    child_score, _ = child_node.minimax(depth - 1, False)
+                    if child_score > max_score:
+                        max_score = child_score
+                        best_move = move
+            return max_score, best_move
+        else:
+            min_score = MAX_HEURISTIC_SCORE
+            best_move = None
+            for move in move_candidates:
+                child_node = self.clone()
+                (success, _) = child_node.perform_move(move)
+                if success:
+                    child_score, _ = child_node.minimax(depth - 1, True)
+                    if child_score < min_score:
+                        min_score = child_score
+                        best_move = move
+            return min_score, best_move
+
     def suggest_move(self) -> CoordPair | None:
-        """Suggest the next move using minimax alpha beta. TODO: REPLACE RANDOM_MOVE WITH PROPER GAME LOGIC!!!"""
         start_time = datetime.now()
-        (score, move, avg_depth) = self.random_move()
+        (score, move) = self.minimax(self.options.max_depth, True)
         elapsed_seconds = (datetime.now() - start_time).total_seconds()
         self.stats.total_seconds += elapsed_seconds
         print(f"Heuristic score: {score}")
-        print(f"Average recursive depth: {avg_depth:0.1f}")
-        print(f"Evals per depth: ",end='')
-        for k in sorted(self.stats.evaluations_per_depth.keys()):
-            print(f"{k}:{self.stats.evaluations_per_depth[k]} ",end='')
-        print()
-        total_evals = sum(self.stats.evaluations_per_depth.values())
-        if self.stats.total_seconds > 0:
-            print(f"Eval perf.: {total_evals/self.stats.total_seconds/1000:0.1f}k/s")
         print(f"Elapsed time: {elapsed_seconds:0.1f}s")
         return move
     
-    def minimax(self, node: Game, depth: int, alpha: int, beta: int, maximizing_player: bool) -> Tuple[int, CoordPair | None]:
+    def alpha_beta(self, node: Game, depth: int, alpha: int, beta: int, maximizing_player: bool) -> Tuple[int, CoordPair | None]:
          # Base case: if reached maximum depth or game is finished, evaluate the node
         if depth == 0 or node.is_finished(): 
-            score = self.evaluate(node) # Evaluate the current game state
+            score = self.options.heuristic # Evaluate the current game state
             return score, None  # Return the score and no move (leaf node)
 
         move_candidates = list(node.move_candidates())
@@ -726,7 +769,7 @@ class Game:
                 (success, _) = child_node.perform_move(move) 
                 if success:
                      # Recur with the child node, reducing depth, and switching player
-                    child_score, _ = self.minimax(child_node, depth - 1, alpha, beta, False)
+                    child_score, _ = self.alpha_beta(child_node, depth - 1, alpha, beta, False)
                     if child_score > max_score:
                         max_score = child_score
                         best_move = move
@@ -741,7 +784,7 @@ class Game:
                 child_node = node.clone()
                 (success, _) = child_node.perform_move(move)
                 if success:
-                    child_score, _ = self.minimax(child_node, depth - 1, alpha, beta, True)
+                    child_score, _ = self.alpha_beta(child_node, depth - 1, alpha, beta, True)
                     if child_score < min_score:
                         min_score = child_score
                         best_move = move
