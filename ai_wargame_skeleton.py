@@ -661,7 +661,7 @@ class Game:
         else:
             # If there are no safe moves, return None to indicate no valid moves are available
             return None
-
+        
     def player_units(self, player: Player) -> Iterable[Tuple[Coord,Unit]]:
         """Iterates over all units belonging to a player."""
         for coord in CoordPair.from_dim(self.options.dim).iter_rectangle():
@@ -729,7 +729,7 @@ class Game:
         start_time = datetime.now()
         depth = self.options.max_depth
         if (self.options.alpha_beta):
-            (score, move) = self.alpha_beta(self, depth, MIN_HEURISTIC_SCORE, MAX_HEURISTIC_SCORE, True)
+            (score, move) = self.alpha_beta(depth, MIN_HEURISTIC_SCORE, MAX_HEURISTIC_SCORE, True)
         else:
             (score, move) = self.minimax(self.options.max_depth, True)
         elapsed_seconds = (datetime.now() - start_time).total_seconds()
@@ -778,10 +778,10 @@ class Game:
                         best_move = move
             return min_score, best_move
 
-    def alpha_beta(self, node: Game, depth: int, alpha: int, beta: int, maximizing_player: bool) -> Tuple[int, CoordPair | None]:
+    def alpha_beta(self, depth: int, alpha: int, beta: int, maximizing_player: bool) -> Tuple[int, CoordPair | None]:
          # Base case: if reached maximum depth or game is finished, evaluate the node
         if depth == 0 or self.is_finished(): 
-            score = self.options.heuristic(node) # Evaluate the current game state
+            score = self.options.heuristic(self) # Evaluate the current game state
             return score, None  # Return the score and no move (leaf node)
 
         move_candidates = list(self.move_candidates())
@@ -790,11 +790,11 @@ class Game:
             max_score = MIN_HEURISTIC_SCORE # Initialize max_score to negative infinity
             best_move = None
             for move in move_candidates:
-                child_node = node.clone() # Create a clone of the current node
+                child_node = self.clone() # Create a clone of the current node
                 (success, _) = child_node.perform_move(move) 
                 if success:
                      # Recur with the child node, reducing depth, and switching player
-                    child_score, _ = node.alpha_beta(child_node, depth - 1, alpha, beta, False)
+                    child_score, _ = child_node.alpha_beta( depth - 1, alpha, beta, False)
                     if child_score > max_score:
                         max_score = child_score
                         best_move = move
@@ -806,10 +806,10 @@ class Game:
             min_score = MAX_HEURISTIC_SCORE 
             best_move = None
             for move in move_candidates:
-                child_node = node.clone()
+                child_node = self.clone()
                 (success, _) = child_node.perform_move(move)
                 if success:
-                    child_score, _ = node.alpha_beta(child_node, depth - 1, alpha, beta, True)
+                    child_score, _ = child_node.alpha_beta( depth - 1, alpha, beta, True)
                     if child_score < min_score:
                         min_score = child_score
                         best_move = move
