@@ -239,19 +239,19 @@ class Stats:
 
 ##############################################################################################################
 class Heuristics:
-    @staticmethod
-    def e0(game, player):
-        """
-        Heuristic function e0.
-        Custom heuristic based on player statistics.
-        """
-        VP = game.count_virus(player)
-        TP = game.count_tech(player)
-        FP = game.count_firewall(player)
-        PP = game.count_program(player)
-        AIP = game.count_ai(player)
+    # @staticmethod
+    # def e0(game, player):
+    #     """
+    #     Heuristic function e0.
+    #     Custom heuristic based on player statistics.
+    #     """
+    #     VP = game.count_virus(player)
+    #     TP = game.count_tech(player)
+    #     FP = game.count_firewall(player)
+    #     PP = game.count_program(player)
+    #     AIP = game.count_ai(player)
 
-        return (3 * (VP + TP + FP + PP) + 9999 * AIP)
+    #     return (3 * (VP + TP + FP + PP) + 9999 * AIP)
 
     @staticmethod
     def e1(game, player):
@@ -278,21 +278,21 @@ class Heuristics:
             safe_moves = len(game.get_safe_defender_moves())
         return safe_moves
     
-    # def e3(game):
-    #     # Number of alive units belonging to the attacker player
-    #     attacker_units = sum(1 for _, unit in game.player_units(Player.Attacker) if unit.is_alive())
+    def e0(game):
+        # Number of alive units belonging to the attacker player
+        attacker_units = sum(1 for _, unit in game.player_units(Player.Attacker) if unit.is_alive())
 
-    #     # Number of alive units belonging to the defender player
-    #     defender_units = sum(1 for _, unit in game.player_units(Player.Defender) if unit.is_alive())
+        # Number of alive units belonging to the defender player
+        defender_units = sum(1 for _, unit in game.player_units(Player.Defender) if unit.is_alive())
 
-    #     # The total health of alive units for the attacker player
-    #     attacker_health = sum(unit.health for _, unit in game.player_units(Player.Attacker) if unit.is_alive())
+        # The total health of alive units for the attacker player
+        attacker_health = sum(unit.health for _, unit in game.player_units(Player.Attacker) if unit.is_alive())
 
-    #     # The total health of alive units for the defender player
-    #     defender_health = sum(unit.health for _, unit in game.player_units(Player.Defender) if unit.is_alive())
+        # The total health of alive units for the defender player
+        defender_health = sum(unit.health for _, unit in game.player_units(Player.Defender) if unit.is_alive())
 
-    #     # The heuristic value is a weighted sum of unit count and total health difference
-    #     return 2 * (attacker_units - defender_units) + 0.5 * (attacker_health - defender_health)
+        # The heuristic value is a weighted sum of unit count and total health difference
+        return 2 * (attacker_units - defender_units) + 0.5 * (attacker_health - defender_health)
 
 
 
@@ -388,8 +388,7 @@ class Game:
         # Update unit health based on damage
         self.mod_health(attacker_coord, -defender_damage)
         self.mod_health(defender_coord, -attacker_damage)
-        print(f" Attack from {attacker.player.name} from {attacker_coord} to {defender_coord}")
-        output_file.write(f" Attack {attacker.player.name} from {attacker_coord} to {defender_coord}" + "\n")
+        #print(f" Attack from {attacker.player.name} from {attacker_coord} to {defender_coord}")
         # Check if units are destroyed and remove them from the board
         if not attacker.is_alive():
             self.set(attacker_coord, None)
@@ -471,7 +470,7 @@ class Game:
         source = self.get(src_coord)
         self.mod_health(src_coord, -source.health)#minus source health by source health 
         print(f"{source.player.name} self-destruct at {src_coord}")
-        output_file.write(f"{source.player.name} self-destruct at {src_coord}" + "\n")
+        #output_file.write(f"{source.player.name} self-destruct at {src_coord}" + "\n")
         #to remove the unit
         self.remove_dead(src_coord)
         number_damages = 0
@@ -518,7 +517,7 @@ class Game:
 
         # Remove dead units if there are in target, and say what is repaired
         self.remove_dead(target_coord) 
-        output_file.write(f"Unit repaired: {target_unit.type.name} at {target_coord}" + "\n")
+        #output_file.write(f"Unit repaired: {target_unit.type.name} at {target_coord}" + "\n")
         return True, f"Unit repaired: {target_unit.type.name} at {target_coord}"
 
     # Modify the perform_move method to handle repair
@@ -532,7 +531,7 @@ class Game:
             return True, "Attack successful"
         elif self.is_valid_move(coords):
             print(f"{src_unit.player.name} move from {coords.src} to {coords.dst}")
-            output_file.write(f"{src_unit.player.name} move from {coords.src} to {coords.dst}" + "\n")
+            #output_file.write(f"{src_unit.player.name} move from {coords.src} to {coords.dst}" + "\n")
             self.set(coords.dst, self.get(coords.src)) #set new coords
             self.set(coords.src, None) #empty source
             return True, "Move successful"
@@ -711,10 +710,31 @@ class Game:
     #         print(f"Eval perf.: {total_evals/self.stats.total_seconds/1000:0.1f}k/s")
     #     print(f"Elapsed time: {elapsed_seconds:0.1f}s")
     #     return move
+
+    def suggest_move(self) -> CoordPair | None:
+        start_time = datetime.now()
+        depth = self.options.max_depth
+        if (self.options.alpha_beta):
+            (score, move) = self.alpha_beta(self, depth, MIN_HEURISTIC_SCORE, MAX_HEURISTIC_SCORE, True)
+        else:
+            (score, move) = self.minimax(self.options.max_depth, True)
+        elapsed_seconds = (datetime.now() - start_time).total_seconds()
+        self.stats.total_seconds += elapsed_seconds
+        print(f"Heuristic score: {score}")
+        print(f"Elapsed time: {elapsed_seconds:0.1f}s")
+        print(f"Evals per depth: ",end='')
+        for k in sorted(self.stats.evaluations_per_depth.keys()):
+            print(f"{k}:{self.stats.evaluations_per_depth[k]} ",end='')
+        print()
+        total_evals = sum(self.stats.evaluations_per_depth.values())
+        if self.stats.total_seconds > 0:
+            print(f"Eval perf.: {total_evals/self.stats.total_seconds/1000:0.1f}k/s")
+        print(f"Elapsed time: {elapsed_seconds:0.1f}s")
+        return move
     
     def minimax(self, depth: int, maximizing_player: bool) -> Tuple[int, CoordPair | None]:
         if depth == 0 or self.is_finished():
-            score = self.options.heuristic(self, self.next_player)
+            score = self.options.heuristic(self)
             return score, None
 
         move_candidates = list(self.move_candidates())
@@ -744,22 +764,13 @@ class Game:
                         best_move = move
             return min_score, best_move
 
-    def suggest_move(self) -> CoordPair | None:
-        start_time = datetime.now()
-        (score, move) = self.minimax(self.options.max_depth, True)
-        elapsed_seconds = (datetime.now() - start_time).total_seconds()
-        self.stats.total_seconds += elapsed_seconds
-        print(f"Heuristic score: {score}")
-        print(f"Elapsed time: {elapsed_seconds:0.1f}s")
-        return move
-    
     def alpha_beta(self, node: Game, depth: int, alpha: int, beta: int, maximizing_player: bool) -> Tuple[int, CoordPair | None]:
          # Base case: if reached maximum depth or game is finished, evaluate the node
-        if depth == 0 or node.is_finished(): 
+        if depth == 0 or self.is_finished(): 
             score = self.options.heuristic # Evaluate the current game state
             return score, None  # Return the score and no move (leaf node)
 
-        move_candidates = list(node.move_candidates())
+        move_candidates = list(self.move_candidates())
         random.shuffle(move_candidates)  # Shuffle for better randomness
         if maximizing_player:
             max_score = MIN_HEURISTIC_SCORE # Initialize max_score to negative infinity
@@ -769,11 +780,11 @@ class Game:
                 (success, _) = child_node.perform_move(move) 
                 if success:
                      # Recur with the child node, reducing depth, and switching player
-                    child_score, _ = self.alpha_beta(child_node, depth - 1, alpha, beta, False)
-                    if child_score > max_score:
-                        max_score = child_score
-                        best_move = move
-                    alpha = max(alpha, max_score) # Update alpha with max_score
+                    child_score, _ = node.alpha_beta(child_node, depth - 1, alpha, beta, False)
+                    # if child_score > max_score:
+                    #     max_score = child_score
+                    #     best_move = move
+                    alpha = max(alpha, child_score) # Update alpha with max_score
                     if beta <= alpha:
                         break  # Beta cut-off, prune the search tree
             return max_score, best_move # Return the maximum score and the corresponding move
@@ -784,11 +795,11 @@ class Game:
                 child_node = node.clone()
                 (success, _) = child_node.perform_move(move)
                 if success:
-                    child_score, _ = self.alpha_beta(child_node, depth - 1, alpha, beta, True)
-                    if child_score < min_score:
-                        min_score = child_score
-                        best_move = move
-                    beta = min(beta, min_score)
+                    child_score, _ = node.alpha_beta(child_node, depth - 1, alpha, beta, True)
+                    # if child_score < min_score:
+                    #     min_score = child_score
+                    #     best_move = move
+                    beta = min(beta, child_score)
                     if beta <= alpha:
                         break  # Alpha cut-off, prune the search tree
             return min_score, best_move
@@ -900,10 +911,6 @@ def main():
         print("Please enter a valid choice (0 for Minimax or 1 for Alpha-Beta).")
         alpha_beta_choice = input("Choose the search algorithm (Minimax: 0, Alpha-Beta: 1): ").strip()
 
-    if alpha_beta_choice == '0':
-        alpha_beta = False  # Minimax
-    else:
-        alpha_beta = True  # Alpha-Beta
 
     # Select the heuristic based on the user's choice
     selected_heuristic = heuristic_mapping.get(heuristic_choice)
@@ -920,7 +927,10 @@ def main():
 
     # Set up game options
     options = Options(game_type=game_type, heuristic=selected_heuristic)
-    options = Options(game_type=game_type, max_time=max_time, max_turns=max_turns, heuristic=selected_heuristic)
+    if alpha_beta_choice == '0':
+        options = Options(game_type=game_type, max_time=max_time, max_turns=max_turns, heuristic=selected_heuristic,alpha_beta=False)  # Minimax
+    else:
+        options = Options(game_type=game_type, max_time=max_time, max_turns=max_turns, heuristic=selected_heuristic,alpha_beta=True)  # Alpha-Beta
 
     # Override class defaults via command line options
     if args.max_depth is not None:
