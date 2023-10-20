@@ -254,32 +254,7 @@ class Heuristics:
         return (3 * (VP + TP + FP + PP) + 9999 * AIP)
 
     @staticmethod
-    def e1(game, player):
-        """
-        Heuristic function e1.
-        This heuristic evaluates the game state based on the difference in the number of pieces.
-        """
-        attacker_pieces = game.count_pieces(Player.Attacker)
-        defender_pieces = game.count_pieces(Player.Defender)
-        if player == Player.Attacker:
-            return attacker_pieces - defender_pieces
-        else:
-            return defender_pieces - attacker_pieces
-
-    # @staticmethod
-    # def e2(game, player):
-    #     """
-    #     Heuristic function e2.
-    #     This heuristic evaluates the game state based on the number of safe moves for the player.
-    #     """
-    #     if player == Player.Attacker:
-    #         safe_moves = len(game.get_safe_attacker_moves())
-    #     else:
-    #         safe_moves = len(game.get_safe_defender_moves())
-    #     return safe_moves
-    
-    @staticmethod
-    def e2(game):
+    def e1(game):
         # Number of alive units belonging to the attacker player
         attacker_units = sum(1 for _, unit in game.player_units(Player.Attacker) if unit.is_alive())
 
@@ -295,7 +270,17 @@ class Heuristics:
         # The heuristic value is a weighted sum of unit count and total health difference
         return 2 * (attacker_units - defender_units) + 0.5 * (attacker_health - defender_health)
 
-
+    @staticmethod
+    def e2(game, player):
+        """
+        Heuristic function e2.
+        This heuristic evaluates the game state based on the number of safe moves for the player.
+        """
+        if player == Player.Attacker:
+            safe_moves = len(game.get_safe_attacker_moves())
+        else:
+            safe_moves = len(game.get_safe_defender_moves())
+        return safe_moves
 
 ##############################################################################################################
 

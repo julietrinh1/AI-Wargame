@@ -1,0 +1,411 @@
+Options(dim=5, max_depth=4, min_depth=2, max_time=112.0, game_type=<GameType.CompVsComp: 3>, alpha_beta=True, max_turns=112, randomize_moves=True, broker=None, heuristic=<function Heuristics.e0 at 0x0000025C62CC6700>)
+Next player: Attacker
+Turns played: 0
+
+    0   1   2   3   4  
+A: dA9 dT9 dF9  .   .  
+B: dT9 dP9  .   .   .  
+C: dF9  .   .   .  aP9 
+D:  .   .   .  aF9 aV9 
+E:  .   .  aP9 aV9 aA9 
+
+####################################
+Attacker move from E2 to E1
+Next player: Defender
+Turns played: 1
+
+    0   1   2   3   4  
+A: dA9 dT9 dF9  .   .  
+B: dT9 dP9  .   .   .  
+C: dF9  .   .   .  aP9 
+D:  .   .   .  aF9 aV9 
+E:  .  aP9  .  aV9 aA9 
+
+####################################
+Defender move from C0 to C1
+Next player: Attacker
+Turns played: 2
+
+    0   1   2   3   4  
+A: dA9 dT9 dF9  .   .  
+B: dT9 dP9  .   .   .  
+C:  .  dF9  .   .  aP9 
+D:  .   .   .  aF9 aV9 
+E:  .  aP9  .  aV9 aA9 
+
+####################################
+Attacker self-destruct at E1
+Next player: Defender
+Turns played: 3
+
+    0   1   2   3   4  
+A: dA9 dT9 dF9  .   .  
+B: dT9 dP9  .   .   .  
+C:  .  dF9  .   .  aP9 
+D:  .   .   .  aF9 aV9 
+E:  .   .   .  aV9 aA9 
+
+####################################
+Defender self-destruct at A2
+Next player: Attacker
+Turns played: 4
+
+    0   1   2   3   4  
+A: dA9 dT7  .   .   .  
+B: dT9 dP7  .   .   .  
+C:  .  dF9  .   .  aP9 
+D:  .   .   .  aF9 aV9 
+E:  .   .   .  aV9 aA9 
+
+####################################
+Attacker move from E3 to E2
+Next player: Defender
+Turns played: 5
+
+    0   1   2   3   4  
+A: dA9 dT7  .   .   .  
+B: dT9 dP7  .   .   .  
+C:  .  dF9  .   .  aP9 
+D:  .   .   .  aF9 aV9 
+E:  .   .  aV9  .  aA9 
+
+####################################
+Defender move from C1 to C2
+Next player: Attacker
+Turns played: 6
+
+    0   1   2   3   4  
+A: dA9 dT7  .   .   .  
+B: dT9 dP7  .   .   .  
+C:  .   .  dF9  .  aP9 
+D:  .   .   .  aF9 aV9 
+E:  .   .  aV9  .  aA9 
+
+####################################
+Attacker self-destruct at D3
+Next player: Defender
+Turns played: 7
+
+    0   1   2   3   4  
+A: dA9 dT7  .   .   .  
+B: dT9 dP7  .   .   .  
+C:  .   .  dF7  .  aP7 
+D:  .   .   .   .  aV7 
+E:  .   .  aV7  .  aA7 
+
+####################################
+Defender self-destruct at B1
+Next player: Attacker
+Turns played: 8
+
+    0   1   2   3   4  
+A: dA7 dT5  .   .   .  
+B: dT7  .   .   .   .  
+C:  .   .  dF5  .  aP7 
+D:  .   .   .   .  aV7 
+E:  .   .  aV7  .  aA7 
+
+####################################
+Attacker self-destruct at E2
+Next player: Defender
+Turns played: 9
+
+    0   1   2   3   4  
+A: dA7 dT5  .   .   .  
+B: dT7  .   .   .   .  
+C:  .   .  dF5  .  aP7 
+D:  .   .   .   .  aV7 
+E:  .   .   .   .  aA7 
+
+####################################
+Defender move from B0 to C0
+Next player: Attacker
+Turns played: 10
+
+    0   1   2   3   4  
+A: dA7 dT5  .   .   .  
+B:  .   .   .   .   .  
+C: dT7  .  dF5  .  aP7 
+D:  .   .   .   .  aV7 
+E:  .   .   .   .  aA7 
+
+####################################
+Attacker self-destruct at D4
+Next player: Defender
+Turns played: 11
+
+    0   1   2   3   4  
+A: dA7 dT5  .   .   .  
+B:  .   .   .   .   .  
+C: dT7  .  dF5  .  aP5 
+D:  .   .   .   .   .  
+E:  .   .   .   .  aA5 
+
+####################################
+Defender self-destruct at A1
+Next player: Attacker
+Turns played: 12
+
+    0   1   2   3   4  
+A: dA5  .   .   .   .  
+B:  .   .   .   .   .  
+C: dT7  .  dF5  .  aP5 
+D:  .   .   .   .   .  
+E:  .   .   .   .  aA5 
+
+####################################
+Attacker move from C4 to B4
+Next player: Defender
+Turns played: 13
+
+    0   1   2   3   4  
+A: dA5  .   .   .   .  
+B:  .   .   .   .  aP5 
+C: dT7  .  dF5  .   .  
+D:  .   .   .   .   .  
+E:  .   .   .   .  aA5 
+
+####################################
+Defender self-destruct at C0
+Next player: Attacker
+Turns played: 14
+
+    0   1   2   3   4  
+A: dA5  .   .   .   .  
+B:  .   .   .   .  aP5 
+C:  .   .  dF5  .   .  
+D:  .   .   .   .   .  
+E:  .   .   .   .  aA5 
+
+####################################
+Attacker self-destruct at B4
+Next player: Defender
+Turns played: 15
+
+    0   1   2   3   4  
+A: dA5  .   .   .   .  
+B:  .   .   .   .   .  
+C:  .   .  dF5  .   .  
+D:  .   .   .   .   .  
+E:  .   .   .   .  aA5 
+
+####################################
+Defender move from C2 to C3
+Next player: Attacker
+Turns played: 16
+
+    0   1   2   3   4  
+A: dA5  .   .   .   .  
+B:  .   .   .   .   .  
+C:  .   .   .  dF5  .  
+D:  .   .   .   .   .  
+E:  .   .   .   .  aA5 
+
+####################################
+Attacker move from E4 to E3
+Next player: Defender
+Turns played: 17
+
+    0   1   2   3   4  
+A: dA5  .   .   .   .  
+B:  .   .   .   .   .  
+C:  .   .   .  dF5  .  
+D:  .   .   .   .   .  
+E:  .   .   .  aA5  .  
+
+####################################
+Defender self-destruct at C3
+Next player: Attacker
+Turns played: 18
+
+    0   1   2   3   4  
+A: dA5  .   .   .   .  
+B:  .   .   .   .   .  
+C:  .   .   .   .   .  
+D:  .   .   .   .   .  
+E:  .   .   .  aA5  .  
+
+####################################
+Attacker move from E3 to D3
+Next player: Defender
+Turns played: 19
+
+    0   1   2   3   4  
+A: dA5  .   .   .   .  
+B:  .   .   .   .   .  
+C:  .   .   .   .   .  
+D:  .   .   .  aA5  .  
+E:  .   .   .   .   .  
+
+####################################
+Defender move from A0 to B0
+Next player: Attacker
+Turns played: 20
+
+    0   1   2   3   4  
+A:  .   .   .   .   .  
+B: dA5  .   .   .   .  
+C:  .   .   .   .   .  
+D:  .   .   .  aA5  .  
+E:  .   .   .   .   .  
+
+####################################
+Attacker move from D3 to C3
+Next player: Defender
+Turns played: 21
+
+    0   1   2   3   4  
+A:  .   .   .   .   .  
+B: dA5  .   .   .   .  
+C:  .   .   .  aA5  .  
+D:  .   .   .   .   .  
+E:  .   .   .   .   .  
+
+####################################
+Defender move from B0 to C0
+Next player: Attacker
+Turns played: 22
+
+    0   1   2   3   4  
+A:  .   .   .   .   .  
+B:  .   .   .   .   .  
+C: dA5  .   .  aA5  .  
+D:  .   .   .   .   .  
+E:  .   .   .   .   .  
+
+####################################
+Attacker move from C3 to B3
+Next player: Defender
+Turns played: 23
+
+    0   1   2   3   4  
+A:  .   .   .   .   .  
+B:  .   .   .  aA5  .  
+C: dA5  .   .   .   .  
+D:  .   .   .   .   .  
+E:  .   .   .   .   .  
+
+####################################
+Defender move from C0 to C1
+Next player: Attacker
+Turns played: 24
+
+    0   1   2   3   4  
+A:  .   .   .   .   .  
+B:  .   .   .  aA5  .  
+C:  .  dA5  .   .   .  
+D:  .   .   .   .   .  
+E:  .   .   .   .   .  
+
+####################################
+Attacker move from B3 to A3
+Next player: Defender
+Turns played: 25
+
+    0   1   2   3   4  
+A:  .   .   .  aA5  .  
+B:  .   .   .   .   .  
+C:  .  dA5  .   .   .  
+D:  .   .   .   .   .  
+E:  .   .   .   .   .  
+
+####################################
+Defender move from C1 to D1
+Next player: Attacker
+Turns played: 26
+
+    0   1   2   3   4  
+A:  .   .   .  aA5  .  
+B:  .   .   .   .   .  
+C:  .   .   .   .   .  
+D:  .  dA5  .   .   .  
+E:  .   .   .   .   .  
+
+####################################
+Attacker move from A3 to A2
+Next player: Defender
+Turns played: 27
+
+    0   1   2   3   4  
+A:  .   .  aA5  .   .  
+B:  .   .   .   .   .  
+C:  .   .   .   .   .  
+D:  .  dA5  .   .   .  
+E:  .   .   .   .   .  
+
+####################################
+Defender move from D1 to E1
+Next player: Attacker
+Turns played: 28
+
+    0   1   2   3   4  
+A:  .   .  aA5  .   .  
+B:  .   .   .   .   .  
+C:  .   .   .   .   .  
+D:  .   .   .   .   .  
+E:  .  dA5  .   .   .  
+
+####################################
+Attacker move from A2 to A1
+Next player: Defender
+Turns played: 29
+
+    0   1   2   3   4  
+A:  .  aA5  .   .   .  
+B:  .   .   .   .   .  
+C:  .   .   .   .   .  
+D:  .   .   .   .   .  
+E:  .  dA5  .   .   .  
+
+####################################
+Defender move from E1 to E2
+Next player: Attacker
+Turns played: 30
+
+    0   1   2   3   4  
+A:  .  aA5  .   .   .  
+B:  .   .   .   .   .  
+C:  .   .   .   .   .  
+D:  .   .   .   .   .  
+E:  .   .  dA5  .   .  
+
+####################################
+Attacker move from A1 to A0
+Next player: Defender
+Turns played: 31
+
+    0   1   2   3   4  
+A: aA5  .   .   .   .  
+B:  .   .   .   .   .  
+C:  .   .   .   .   .  
+D:  .   .   .   .   .  
+E:  .   .  dA5  .   .  
+
+####################################
+Defender move from E2 to E3
+Next player: Attacker
+Turns played: 32
+
+    0   1   2   3   4  
+A: aA5  .   .   .   .  
+B:  .   .   .   .   .  
+C:  .   .   .   .   .  
+D:  .   .   .   .   .  
+E:  .   .   .  dA5  .  
+
+####################################
+Attacker self-destruct at A0
+Next player: Defender
+Turns played: 33
+
+    0   1   2   3   4  
+A:  .   .   .   .   .  
+B:  .   .   .   .   .  
+C:  .   .   .   .   .  
+D:  .   .   .   .   .  
+E:  .   .   .  dA5  .  
+
+####################################
+Defender wins in 33 turns
+Value of Timeout (s): 112.0 seconds
+Maximum number of turns: 112
