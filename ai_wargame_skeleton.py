@@ -266,33 +266,34 @@ class Heuristics:
         else:
             return defender_pieces - attacker_pieces
 
-    @staticmethod
-    def e2(game, player):
-        """
-        Heuristic function e2.
-        This heuristic evaluates the game state based on the number of safe moves for the player.
-        """
-        if player == Player.Attacker:
-            safe_moves = len(game.get_safe_attacker_moves())
-        else:
-            safe_moves = len(game.get_safe_defender_moves())
-        return safe_moves
+    # @staticmethod
+    # def e2(game, player):
+    #     """
+    #     Heuristic function e2.
+    #     This heuristic evaluates the game state based on the number of safe moves for the player.
+    #     """
+    #     if player == Player.Attacker:
+    #         safe_moves = len(game.get_safe_attacker_moves())
+    #     else:
+    #         safe_moves = len(game.get_safe_defender_moves())
+    #     return safe_moves
     
-    # def e3(game):
-    #     # Number of alive units belonging to the attacker player
-    #     attacker_units = sum(1 for _, unit in game.player_units(Player.Attacker) if unit.is_alive())
+    @staticmethod
+    def e2(game):
+        # Number of alive units belonging to the attacker player
+        attacker_units = sum(1 for _, unit in game.player_units(Player.Attacker) if unit.is_alive())
 
-    #     # Number of alive units belonging to the defender player
-    #     defender_units = sum(1 for _, unit in game.player_units(Player.Defender) if unit.is_alive())
+        # Number of alive units belonging to the defender player
+        defender_units = sum(1 for _, unit in game.player_units(Player.Defender) if unit.is_alive())
 
-    #     # The total health of alive units for the attacker player
-    #     attacker_health = sum(unit.health for _, unit in game.player_units(Player.Attacker) if unit.is_alive())
+        # The total health of alive units for the attacker player
+        attacker_health = sum(unit.health for _, unit in game.player_units(Player.Attacker) if unit.is_alive())
 
-    #     # The total health of alive units for the defender player
-    #     defender_health = sum(unit.health for _, unit in game.player_units(Player.Defender) if unit.is_alive())
+        # The total health of alive units for the defender player
+        defender_health = sum(unit.health for _, unit in game.player_units(Player.Defender) if unit.is_alive())
 
-    #     # The heuristic value is a weighted sum of unit count and total health difference
-    #     return 2 * (attacker_units - defender_units) + 0.5 * (attacker_health - defender_health)
+        # The heuristic value is a weighted sum of unit count and total health difference
+        return 2 * (attacker_units - defender_units) + 0.5 * (attacker_health - defender_health)
 
 
 
@@ -641,14 +642,43 @@ class Game:
     def computer_turn(self) -> CoordPair | None:
         """Computer plays a move."""
         mv = self.suggest_move()
-        if mv is not None:
-            (success,result) = self.perform_move(mv)
+
+        if mv is not None:  # Check if mv is not None
+            src_unit = self.get(mv.src)
+
+            if src_unit is not None and src_unit.type == UnitType.AI:
+                if self.is_valid_self_destruction(mv):
+                    # Handle the AI's decision here, e.g., choose an alternative move or do nothing
+                    # For example, you can select an alternative move:
+                    alternative_mv = self.choose_alternative_move(src_unit)
+                    if alternative_mv is not None:
+                        mv = alternative_mv
+
+            (success, result) = self.perform_move(mv)
             if success:
-                print(f"Computer {self.next_player.name}: ",end='')
+                print(f"Computer {self.next_player.name}: ", end='')
                 print(result)
                 self.next_turn()
         return mv
 
+    def choose_alternative_move(self, src_unit) -> CoordPair | None:
+        # Get the list of available move candidates for the AI
+        move_candidates = list(self.move_candidates())
+
+        # Filter out the moves that result in self-destruction for the AI unit
+        safe_moves = []
+        for move in move_candidates:
+            # Check if the move results in self-destruction
+            if not self.is_valid_self_destruction(move):
+                safe_moves.append(move)
+
+        if safe_moves:
+            # Choose a random safe move from the available alternatives
+            return random.choice(safe_moves)
+        else:
+            # If there are no safe moves, return None to indicate no valid moves are available
+            return None4
+    
     def player_units(self, player: Player) -> Iterable[Tuple[Coord,Unit]]:
         """Iterates over all units belonging to a player."""
         for coord in CoordPair.from_dim(self.options.dim).iter_rectangle():
