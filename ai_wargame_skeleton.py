@@ -781,7 +781,7 @@ class Game:
     def alpha_beta(self, node: Game, depth: int, alpha: int, beta: int, maximizing_player: bool) -> Tuple[int, CoordPair | None]:
          # Base case: if reached maximum depth or game is finished, evaluate the node
         if depth == 0 or self.is_finished(): 
-            score = self.options.heuristic # Evaluate the current game state
+            score = self.options.heuristic(node) # Evaluate the current game state
             return score, None  # Return the score and no move (leaf node)
 
         move_candidates = list(self.move_candidates())
@@ -795,10 +795,10 @@ class Game:
                 if success:
                      # Recur with the child node, reducing depth, and switching player
                     child_score, _ = node.alpha_beta(child_node, depth - 1, alpha, beta, False)
-                    # if child_score > max_score:
-                    #     max_score = child_score
-                    #     best_move = move
-                    alpha = max(alpha, child_score) # Update alpha with max_score
+                    if child_score > max_score:
+                        max_score = child_score
+                        best_move = move
+                    alpha = max(alpha, max_score) # Update alpha with max_score
                     if beta <= alpha:
                         break  # Beta cut-off, prune the search tree
             return max_score, best_move # Return the maximum score and the corresponding move
@@ -810,10 +810,10 @@ class Game:
                 (success, _) = child_node.perform_move(move)
                 if success:
                     child_score, _ = node.alpha_beta(child_node, depth - 1, alpha, beta, True)
-                    # if child_score < min_score:
-                    #     min_score = child_score
-                    #     best_move = move
-                    beta = min(beta, child_score)
+                    if child_score < min_score:
+                        min_score = child_score
+                        best_move = move
+                    beta = min(beta, min_score)
                     if beta <= alpha:
                         break  # Alpha cut-off, prune the search tree
             return min_score, best_move
