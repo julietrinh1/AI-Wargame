@@ -661,7 +661,7 @@ class Game:
         else:
             # If there are no safe moves, return None to indicate no valid moves are available
             return None
-    1
+
     def player_units(self, player: Player) -> Iterable[Tuple[Coord,Unit]]:
         """Iterates over all units belonging to a player."""
         for coord in CoordPair.from_dim(self.options.dim).iter_rectangle():
