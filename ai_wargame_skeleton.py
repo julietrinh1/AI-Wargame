@@ -643,13 +643,12 @@ class Game:
         """Computer plays a move."""
         mv = self.suggest_move()
 
-        if mv is not None:  # Check if mv is not None
+        if mv is not None:
             src_unit = self.get(mv.src)
 
             if src_unit is not None and src_unit.type == UnitType.AI:
                 if self.is_valid_self_destruction(mv):
                     # Handle the AI's decision here, e.g., choose an alternative move or do nothing
-                    # For example, you can select an alternative move:
                     alternative_mv = self.choose_alternative_move(src_unit)
                     if alternative_mv is not None:
                         mv = alternative_mv
@@ -677,8 +676,8 @@ class Game:
             return random.choice(safe_moves)
         else:
             # If there are no safe moves, return None to indicate no valid moves are available
-            return None4
-    
+            return None
+    1
     def player_units(self, player: Player) -> Iterable[Tuple[Coord,Unit]]:
         """Iterates over all units belonging to a player."""
         for coord in CoordPair.from_dim(self.options.dim).iter_rectangle():
