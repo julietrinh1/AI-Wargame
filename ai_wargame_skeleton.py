@@ -245,16 +245,16 @@ class Heuristics:
         Heuristic function e0.
         Custom heuristic based on player statistics.
         """
-        VP = game.count_virus(player)
-        TP = game.count_tech(player)
-        FP = game.count_firewall(player)
-        PP = game.count_program(player)
-        AIP = game.count_ai(player)
+        VP = game.count_units(player, UnitType.Virus)
+        TP = game.count_units(player, UnitType.Tech)
+        FP = game.count_units(player, UnitType.Firewall)
+        PP = game.count_units(player, UnitType.Program)
+        AIP = game.count_units(player, UnitType.AI)
 
         return (3 * (VP + TP + FP + PP) + 9999 * AIP)
 
     @staticmethod
-    def e1(game):
+    def e1(game, player):
         # Number of alive units belonging to the attacker player
         attacker_units = sum(1 for _, unit in game.player_units(Player.Attacker) if unit.is_alive())
 
@@ -668,7 +668,15 @@ class Game:
             unit = self.get(coord)
             if unit is not None and unit.player == player:
                 yield (coord,unit)
-
+                
+    def count_units(game, player, unit_type):
+        """Helper function to count the number of units of a specific type for a player."""
+        count = 0
+        for (_, unit) in game.player_units(player):
+            if unit.type == unit_type and unit.is_alive():
+                count += 1
+        return count
+    
     def is_finished(self) -> bool:
         """Check if the game is over."""
         return self.has_winner() is not None
@@ -727,6 +735,7 @@ class Game:
 
     def suggest_move(self) -> CoordPair | None:
         start_time = datetime.now()
+        max_time = self.options.max_time
         depth = self.options.max_depth
         if (self.options.alpha_beta):
             (score, move) = self.alpha_beta(depth, MIN_HEURISTIC_SCORE, MAX_HEURISTIC_SCORE, True)
@@ -748,7 +757,7 @@ class Game:
     
     def minimax(self, depth: int, maximizing_player: bool) -> Tuple[int, CoordPair | None]:
         if depth == 0 or self.is_finished():
-            score = self.options.heuristic(self)
+            score = self.options.heuristic(self, self.next_player)
             return score, None
 
         move_candidates = list(self.move_candidates())
@@ -781,7 +790,7 @@ class Game:
     def alpha_beta(self, depth: int, alpha: int, beta: int, maximizing_player: bool) -> Tuple[int, CoordPair | None]:
          # Base case: if reached maximum depth or game is finished, evaluate the node
         if depth == 0 or self.is_finished(): 
-            score = self.options.heuristic(self) # Evaluate the current game state
+            score = self.options.heuristic(self, self.next_player) # Evaluate the current game state
             return score, None  # Return the score and no move (leaf node)
 
         move_candidates = list(self.move_candidates())
