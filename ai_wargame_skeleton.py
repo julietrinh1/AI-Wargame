@@ -9,6 +9,7 @@ from typing import Tuple, TypeVar, Type, Iterable, ClassVar
 import random
 import requests
 import argparse
+import time
 
 
 # maximum and minimum values for our heuristic scores (usually represents an end of game condition)
@@ -720,14 +721,16 @@ class Game:
             return (0, None, 0)
 
     def suggest_move(self) -> CoordPair | None:
-        start_time = datetime.now()
-        max_time = self.options.max_time
+        start_time =  time.time()
         depth = self.options.max_depth
+
         if (self.options.alpha_beta):
-            (score, move) = self.alpha_beta(depth, MIN_HEURISTIC_SCORE, MAX_HEURISTIC_SCORE, True)
+            (score, move) = self.alpha_beta(depth, MIN_HEURISTIC_SCORE, MAX_HEURISTIC_SCORE, True, start_time)
         else:
-            (score, move) = self.minimax(self.options.max_depth, True)
-        elapsed_seconds = (datetime.now() - start_time).total_seconds()
+            (score, move) = self.minimax(self.options.max_depth, True, start_time)
+       
+
+        elapsed_seconds = (time.time() - start_time)
         self.stats.total_seconds += elapsed_seconds
         print(f"Heuristic score: {score}")
         print(f"Elapsed time: {elapsed_seconds:0.1f}s")
@@ -741,24 +744,31 @@ class Game:
         print(f"Elapsed time: {elapsed_seconds:0.1f}s")
         return move
     
-    def minimax(self, depth: int, maximizing_player: bool) -> Tuple[int, CoordPair | None]:
+    def minimax(self, depth: int, maximizing_player: bool, start_time: datetime) -> Tuple[int, CoordPair | None]:
+        print(depth)
+        
+        # Base case: if reached maximum depth or game is finished, evaluate the node
         if depth == 0 or self.is_finished():
-            score = self.options.heuristic(self, self.next_player)
+            score = self.options.heuristic(self, self.next_player)  # Evaluate the current game state
             return score, None
 
-        move_candidates = list(self.move_candidates())
+        move_candidates = list(self.move_candidates()) # Get available moves
 
         if maximizing_player:
             max_score = MIN_HEURISTIC_SCORE
             best_move = None
             for move in move_candidates:
-                child_node = self.clone()
-                (success, _) = child_node.perform_move(move, is_final=False)
+                child_node = self.clone() # Create a clone of the current game
+                (success, _) = child_node.perform_move(move, is_final=False) 
                 if success:
-                    child_score, _ = child_node.minimax(depth - 1, False)
+                     # Recur with the child node, reducing depth, and switching player
+                    child_score, _ = child_node.minimax(depth - 1, False, start_time)
                     if child_score > max_score:
-                        max_score = child_score
+                        max_score = child_score # Update max_score if a better move is found
                         best_move = move
+                    elapsed_time =  time.time() - start_time
+                    if elapsed_time > self.options.max_time:
+                        break  # Timeout, interrupt the search
             return max_score, best_move
         else:
             min_score = MAX_HEURISTIC_SCORE
@@ -767,13 +777,17 @@ class Game:
                 child_node = self.clone()
                 (success, _) = child_node.perform_move(move, is_final=False)
                 if success:
-                    child_score, _ = child_node.minimax(depth - 1, True)
+                    child_score, _ = child_node.minimax(depth - 1, True, start_time)
                     if child_score < min_score:
                         min_score = child_score
                         best_move = move
+                    elapsed_time =  time.time() - start_time
+                    if elapsed_time > self.options.max_time:
+                        break  # Timeout, interrupt the search
             return min_score, best_move
 
-    def alpha_beta(self, depth: int, alpha: int, beta: int, maximizing_player: bool) -> Tuple[int, CoordPair | None]:
+    def alpha_beta(self, depth: int, alpha: int, beta: int, maximizing_player: bool, start_time: datetime) -> Tuple[int, CoordPair | None]:
+        print(depth)
          # Base case: if reached maximum depth or game is finished, evaluate the node
         if depth == 0 or self.is_finished(): 
             score = self.options.heuristic(self, self.next_player) # Evaluate the current game state
@@ -789,11 +803,14 @@ class Game:
                 (success, _) = child_node.perform_move(move, is_final=False)
                 if success:
                      # Recur with the child node, reducing depth, and switching player
-                    child_score, _ = child_node.alpha_beta( depth - 1, alpha, beta, False)
+                    child_score, _ = child_node.alpha_beta( depth - 1, alpha, beta, False, start_time)
                     if child_score > max_score:
                         max_score = child_score
                         best_move = move
                     alpha = max(alpha, max_score) # Update alpha with max_score
+                    elapsed_time =  time.time() - start_time
+                    if elapsed_time > self.options.max_time:
+                        break  # Timeout, interrupt the search
                     if beta <= alpha:
                         break  # Beta cut-off, prune the search tree
             return max_score, best_move # Return the maximum score and the corresponding move
@@ -804,11 +821,14 @@ class Game:
                 child_node = self.clone()
                 (success, _) = child_node.perform_move(move, is_final=False)
                 if success:
-                    child_score, _ = child_node.alpha_beta( depth - 1, alpha, beta, True)
+                    child_score, _ = child_node.alpha_beta( depth - 1, alpha, beta, True, start_time)
                     if child_score < min_score:
                         min_score = child_score
                         best_move = move
                     beta = min(beta, min_score)
+                    elapsed_time =  time.time() - start_time
+                    if elapsed_time > self.options.max_time:
+                        break  # Timeout, interrupt the search
                     if beta <= alpha:
                         break  # Alpha cut-off, prune the search tree
             return min_score, best_move
