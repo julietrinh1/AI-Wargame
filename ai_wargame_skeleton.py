@@ -516,6 +516,8 @@ class Game:
             return True, "Self destruction successful"
         if self.is_valid_attack(coords):
             self.perform_combat(coords.src, coords.dst)
+            if is_final:
+                print(f"{src_unit.player.name} attacks from {coords.src} to {coords.dst}")
             return True, "Attack successful"
         elif self.is_valid_move(coords):
             if is_final:
