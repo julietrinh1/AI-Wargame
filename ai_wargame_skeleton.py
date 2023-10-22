@@ -456,6 +456,9 @@ class Game:
     def is_valid_self_destruction(self, coords: CoordPair) -> bool:
         src_unit = self.get(coords.src)
         dst_unit = self.get(coords.dst)
+
+        if src_unit.player != self.next_player:
+            return False
         if self.is_empty(coords.src) is True: #if src is empty, false
             return False
         if src_unit == dst_unit: #if source and dest are same , true
@@ -475,6 +478,9 @@ class Game:
                     number_damages = number_damages + 2
                     self.mod_health(dst, -2)
                     self.remove_dead(dst)
+
+        if source == UnitType.AI:
+            self.is_finished()
 
         # Return the value of number_damages
         return number_damages
