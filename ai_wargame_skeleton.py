@@ -745,8 +745,6 @@ class Game:
         return move
     
     def minimax(self, depth: int, maximizing_player: bool, start_time: datetime) -> Tuple[int, CoordPair | None]:
-        print(depth)
-        
         # Base case: if reached maximum depth or game is finished, evaluate the node
         if depth == 0 or self.is_finished():
             score = self.options.heuristic(self, self.next_player)  # Evaluate the current game state
@@ -787,7 +785,6 @@ class Game:
             return min_score, best_move
 
     def alpha_beta(self, depth: int, alpha: int, beta: int, maximizing_player: bool, start_time: datetime) -> Tuple[int, CoordPair | None]:
-        print(depth)
          # Base case: if reached maximum depth or game is finished, evaluate the node
         if depth == 0 or self.is_finished(): 
             score = self.options.heuristic(self, self.next_player) # Evaluate the current game state
