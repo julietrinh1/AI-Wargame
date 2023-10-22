@@ -8,6 +8,8 @@ from time import sleep
 from typing import Tuple, TypeVar, Type, Iterable, ClassVar
 import random
 import requests
+import argparse
+
 
 # maximum and minimum values for our heuristic scores (usually represents an end of game condition)
 MAX_HEURISTIC_SCORE = 2000000000
@@ -469,17 +471,6 @@ class Game:
                     self.remove_dead(dst)
 
         print(f"self-destructed for {number_damages} total damages")    
-    
-    def perform_move(self, coords: CoordPair) -> Tuple[bool, str]:
-        if self.is_valid_attack(coords): #check if valid attack
-            self.perform_combat(coords.src, coords.dst) #is so make combat
-            return (True, "Attack successful")
-        elif self.is_valid_move(coords): #checks if stead it can move
-            self.set(coords.dst, self.get(coords.src))
-            self.set(coords.src, None)
-            return (True, "Move successful")
-        return (False, "Invalid move") #otherwise invaid
-
 
     def repair_unit(self, source_coord: Coord, target_coord: Coord) -> Tuple[bool, str]:
         source_unit = self.get(source_coord)
@@ -934,6 +925,16 @@ def main():
         print("Please enter a valid choice (0 for Minimax or 1 for Alpha-Beta).")
         alpha_beta_choice = input("Choose the search algorithm (Minimax: 0, Alpha-Beta: 1): ").strip()
 
+    while True:
+        # Prompt the user for the AI depth
+        try:
+            ai_depth = int(input("Enter the AI depth for the search algorithm: "))
+            if ai_depth < 1:
+                print("Please enter a positive integer for the AI depth.")
+            else:
+                break
+        except ValueError:
+            print("Invalid input. Please enter a positive integer for the AI depth.")
 
     # Select the heuristic based on the user's choice
     selected_heuristic = heuristic_mapping.get(heuristic_choice)
@@ -949,11 +950,14 @@ def main():
     args = parser.parse_args()
 
     # Set up game options
-    options = Options(game_type=game_type, heuristic=selected_heuristic)
-    if alpha_beta_choice == '0':
-        options = Options(game_type=game_type, max_time=max_time, max_turns=max_turns, heuristic=selected_heuristic,alpha_beta=False)  # Minimax
-    else:
-        options = Options(game_type=game_type, max_time=max_time, max_turns=max_turns, heuristic=selected_heuristic,alpha_beta=True)  # Alpha-Beta
+    options = Options(
+        game_type=game_type,
+        max_time=max_time,
+        max_turns=max_turns,
+        heuristic=selected_heuristic,
+        alpha_beta=(alpha_beta_choice == '1'),  # Convert the choice to a boolean
+        max_depth=2  # Specify the AI depth (you can change this value as needed)
+)
 
     # Override class defaults via command line options
     if args.max_depth is not None:
