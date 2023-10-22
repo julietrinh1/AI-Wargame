@@ -457,7 +457,7 @@ class Game:
     def perform_self_destruction(self, src_coord: Coord):
         source = self.get(src_coord)
         self.mod_health(src_coord, -source.health)#minus source health by source health 
-        print(f"{source.player.name} self-destruct at {src_coord}")
+        #print(f"{source.player.name} self-destruct at {src_coord}")
         #output_file.write(f"{source.player.name} self-destruct at {src_coord}" + "\n")
         #to remove the unit
         self.remove_dead(src_coord)
@@ -470,7 +470,7 @@ class Game:
                     # Remove dead units
                     self.remove_dead(dst)
 
-        print(f"self-destructed for {number_damages} total damages")    
+        #print(f"self-destructed for {number_damages} total damages")    
 
     def repair_unit(self, source_coord: Coord, target_coord: Coord) -> Tuple[bool, str]:
         source_unit = self.get(source_coord)
@@ -497,25 +497,30 @@ class Game:
         #output_file.write(f"Unit repaired: {target_unit.type.name} at {target_coord}" + "\n")
         return True, f"Unit repaired: {target_unit.type.name} at {target_coord}"
 
-    # Modify the perform_move method to handle repair
-    def perform_move(self, coords: CoordPair) -> Tuple[bool, str]:
+    def perform_move(self, coords: CoordPair, is_final=False) -> Tuple[bool, str]:
         src_unit = self.get(coords.src)
         if self.is_valid_self_destruction(coords):
+            if is_final:
+                print(f"{src_unit.player.name} self-destruct at {coords.src}") 
+                print(f"self-destructed for {number_damages} total damages")
+            #output_file.write(f"{src_unit.player.name} self-destruct at {coords.src}" + "\n")
             self.perform_self_destruction(coords.src)
             return True, "Self destruction successful"
         if self.is_valid_attack(coords):
             self.perform_combat(coords.src, coords.dst)
             return True, "Attack successful"
         elif self.is_valid_move(coords):
-            print(f"{src_unit.player.name} move from {coords.src} to {coords.dst}")
+            if is_final:
+                print(f"{src_unit.player.name} move from {coords.src} to {coords.dst}")
             #output_file.write(f"{src_unit.player.name} move from {coords.src} to {coords.dst}" + "\n")
-            self.set(coords.dst, self.get(coords.src)) #set new coords
-            self.set(coords.src, None) #empty source
+            self.set(coords.dst, self.get(coords.src))  # set new coords
+            self.set(coords.src, None)  # empty source
             return True, "Move successful"
         elif self.is_valid_repair(coords):
-            success, result = self.repair_unit(coords.src, coords.dst) #stores result
+            success, result = self.repair_unit(coords.src, coords.dst)  # stores result
             return success, result
         return False, "Invalid move"
+
 
     # Add this method to check if a repair action is valid
     def is_valid_repair(self, coords: CoordPair) -> bool:
@@ -628,7 +633,7 @@ class Game:
                     if alternative_mv is not None:
                         mv = alternative_mv
 
-            (success, result) = self.perform_move(mv)
+            (success, result) = self.perform_move(mv, is_final=True)
             if success:
                 print(f"Computer {self.next_player.name}: ", end='')
                 print(result)
@@ -758,7 +763,7 @@ class Game:
             best_move = None
             for move in move_candidates:
                 child_node = self.clone()
-                (success, _) = child_node.perform_move(move)
+                (success, _) = child_node.perform_move(move, is_final=False)
                 if success:
                     child_score, _ = child_node.minimax(depth - 1, False)
                     if child_score > max_score:
@@ -770,7 +775,7 @@ class Game:
             best_move = None
             for move in move_candidates:
                 child_node = self.clone()
-                (success, _) = child_node.perform_move(move)
+                (success, _) = child_node.perform_move(move, is_final=False)
                 if success:
                     child_score, _ = child_node.minimax(depth - 1, True)
                     if child_score < min_score:
@@ -791,7 +796,7 @@ class Game:
             best_move = None
             for move in move_candidates:
                 child_node = self.clone() # Create a clone of the current node
-                (success, _) = child_node.perform_move(move) 
+                (success, _) = child_node.perform_move(move, is_final=False)
                 if success:
                      # Recur with the child node, reducing depth, and switching player
                     child_score, _ = child_node.alpha_beta( depth - 1, alpha, beta, False)
@@ -807,7 +812,7 @@ class Game:
             best_move = None
             for move in move_candidates:
                 child_node = self.clone()
-                (success, _) = child_node.perform_move(move)
+                (success, _) = child_node.perform_move(move, is_final=False)
                 if success:
                     child_score, _ = child_node.alpha_beta( depth - 1, alpha, beta, True)
                     if child_score < min_score:
