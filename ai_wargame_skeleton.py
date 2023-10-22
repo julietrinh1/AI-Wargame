@@ -245,15 +245,24 @@ class Heuristics:
     def e0(game, player):
         """
         Heuristic function e0.
-        Custom heuristic based on player statistics.
         """
-        VP = game.count_units(player, UnitType.Virus)
-        TP = game.count_units(player, UnitType.Tech)
-        FP = game.count_units(player, UnitType.Firewall)
-        PP = game.count_units(player, UnitType.Program)
-        AIP = game.count_units(player, UnitType.AI)
+        vp1 = game.count_units(player, UnitType.Virus)
+        tp1 = game.count_units(player, UnitType.Tech)
+        fp1 = game.count_units(player, UnitType.Firewall)
+        pp1 = game.count_units(player, UnitType.Program)
+        aip1 = game.count_units(player, UnitType.AI)
 
-        return (3 * (VP + TP + FP + PP) + 9999 * AIP)
+        other_player = Player.Defender if player == Player.Attacker else Player.Attacker
+        vp2 = game.count_units(other_player, UnitType.Virus)
+        tp2 = game.count_units(other_player, UnitType.Tech)
+        fp2 = game.count_units(other_player, UnitType.Firewall)
+        pp2 = game.count_units(other_player, UnitType.Program)
+        aip2 = game.count_units(other_player, UnitType.AI)
+
+        # Calculate the heuristic value
+        heuristic_value = (3 * vp1 + 3 * tp1 + 3 * fp1 + 3 * pp1 + 9999 * aip1) - (3 * vp2 + 3 * tp2 + 3 * fp2 + 3 * pp2 + 9999 * aip2)
+
+        return heuristic_value
 
     @staticmethod
     def e1(game, player):
@@ -456,21 +465,19 @@ class Game:
     #destroys self destructed and inflict -2 damage to surrounding
     def perform_self_destruction(self, src_coord: Coord):
         source = self.get(src_coord)
-        self.mod_health(src_coord, -source.health)#minus source health by source health 
-        #print(f"{source.player.name} self-destruct at {src_coord}")
-        #output_file.write(f"{source.player.name} self-destruct at {src_coord}" + "\n")
-        #to remove the unit
-        self.remove_dead(src_coord)
+        if source is not None:  # Check if source is not None
+            self.mod_health(src_coord, -source.health)
         number_damages = 0
-        for dst in src_coord.iter_range(1):# checks cells with diff of 1 from source
-            if self.is_valid_coord(dst): #if dest is within board
-                if self.is_empty(dst) is False: #check that there is something there
-                    number_damages = number_damages+2
+        for dst in src_coord.iter_range(1):
+            if self.is_valid_coord(dst):
+                if self.is_empty(dst) is False:
+                    number_damages = number_damages + 2
                     self.mod_health(dst, -2)
-                    # Remove dead units
                     self.remove_dead(dst)
 
-        #print(f"self-destructed for {number_damages} total damages")    
+        # Return the value of number_damages
+        return number_damages
+  
 
     def repair_unit(self, source_coord: Coord, target_coord: Coord) -> Tuple[bool, str]:
         source_unit = self.get(source_coord)
@@ -500,6 +507,7 @@ class Game:
     def perform_move(self, coords: CoordPair, is_final=False) -> Tuple[bool, str]:
         src_unit = self.get(coords.src)
         if self.is_valid_self_destruction(coords):
+            number_damages = self.perform_self_destruction(coords.src)
             if is_final:
                 print(f"{src_unit.player.name} self-destruct at {coords.src}") 
                 print(f"self-destructed for {number_damages} total damages")
@@ -872,6 +880,36 @@ class Game:
             print(f"Broker error: {error}")
         return None
 
+    def get_safe_attacker_moves(self):
+        safe_moves = []
+        for move in self.move_candidates():
+            if not self.is_valid_self_destruction(move):
+                # Check if the move results in an attack
+                if self.is_valid_attack(move):
+                    safe_moves.append(move)
+                # Check if the move results in a repair
+                elif self.is_valid_repair(move):
+                    safe_moves.append(move)
+                # Check if the move results in a regular move
+                elif self.is_valid_move(move):
+                    safe_moves.append(move)
+                # Add other criteria for safe moves specific to your game
+
+        return safe_moves
+
+    def get_safe_defender_moves(self):
+        safe_moves = []
+        for move in self.move_candidates():
+            if not self.is_valid_self_destruction(move):
+                # Check if the move results in a repair
+                if self.is_valid_repair(move):
+                    safe_moves.append(move)
+                # Check if the move results in a regular move
+                elif self.is_valid_move(move):
+                    safe_moves.append(move)
+                # Add other criteria for safe moves specific to your game
+
+        return safe_moves
 ##############################################################################################################
 
 def main():
