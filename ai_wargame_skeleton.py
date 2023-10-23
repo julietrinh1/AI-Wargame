@@ -300,6 +300,24 @@ class Heuristics:
         else:
             safe_moves = len(game.get_safe_defender_moves())
         return safe_moves
+    
+    def heuristic_e3(self, state):
+        """
+        Heuristic that prioritizes healing. The score is higher when the AI's units are healthier.
+        Adjust the weightings as needed to balance this with other factors you want to consider in your heuristic.
+        """
+        score = 0
+        # Assuming you have a way to get all units
+        for unit in state.get_all_units():
+            # Assuming units have methods to get current and max health
+            health_ratio = unit.get_current_health() / unit.get_max_health()
+            score += health_ratio
+
+            # Add conditions to give extra score for units that need healing
+            if unit.get_current_health() < unit.get_max_health() and unit.can_heal():
+                score += 10  # Adjust this value as needed to give appropriate weight to healing
+
+        return score    
 
 ##############################################################################################################
 
@@ -739,30 +757,45 @@ class Game:
             return (0, None, 0)
 
     def suggest_move(self) -> CoordPair | None:
-        start_time =  time.time()
+        start_time = time.time()
         depth = self.options.max_depth
 
-        if (self.options.alpha_beta):
+        if self.options.alpha_beta:
             (score, move) = self.alpha_beta(depth, MIN_HEURISTIC_SCORE, MAX_HEURISTIC_SCORE, True, start_time)
         else:
             (score, move) = self.minimax(self.options.max_depth, True, start_time)
-       
 
         elapsed_seconds = (time.time() - start_time)
         self.stats.total_seconds += elapsed_seconds
         print(f"Heuristic score: {score}")
         output_file.write(f"Heuristic score: {score}" + "\n")
         print(f"Elapsed time: {elapsed_seconds:0.1f}s")
-        print(f"Evals per depth: ",end='')
-        for k in sorted(self.stats.evaluations_per_depth.keys()):
-            print(f"{k}:{self.stats.evaluations_per_depth[k]} ",end='')
-        print()
+        
+        print("Evals per depth: ", end='')
         total_evals = sum(self.stats.evaluations_per_depth.values())
+        
+        for depth, evals in sorted(self.stats.evaluations_per_depth.items()):
+            print(f"{depth}={evals} ", end='')
+            # Calculate and print cumulative percentage evaluations by depth
+            cumulative_percentage = (evals / total_evals) * 100
+            print(f"({cumulative_percentage:.1f}%) ", end='')
+
+        print()
+        
         if self.stats.total_seconds > 0:
-            print(f"Eval perf.: {total_evals/self.stats.total_seconds/1000:0.1f}k/s")
+            # Calculate and print average branching factor
+            average_branching_factor = total_evals / (self.options.max_depth + 1)
+            print(f"Average branching factor: {average_branching_factor:.1f}")
+            output_file.write(f"Average branching factor: {average_branching_factor:.1f}" + "\n")
+
+            # Calculate and print evaluation performance
+            eval_performance = total_evals / (self.stats.total_seconds * 1000)
+            print(f"Eval perf.: {eval_performance:.1f}k/s")
         print(f"Elapsed time: {elapsed_seconds:0.1f}s")
         output_file.write(f"Elapsed time: {elapsed_seconds:0.1f}s" + "\n")
+
         return move
+
     
     def minimax(self, depth: int, maximizing_player: bool, start_time: datetime) -> Tuple[int, CoordPair | None]:
         # Base case: if reached maximum depth or game is finished, evaluate the node
