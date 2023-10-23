@@ -5,7 +5,7 @@
  - ai vs human
  - ai vs ai
 
-### game prompts 
+### Game prompts 
 - choose a play mode
 - the maximum time for a turn
 - the maximum number of turns
@@ -18,7 +18,7 @@
  - attack
  - repair
  - self destruct
-### information displayed
+### Information displayed
  - the turn number
  - name of player
  - action taken
@@ -28,7 +28,7 @@
  - the number of states evaluated by the heuristic function since the beginning of the game, also by depth and by percentage (if possible)
  - branching factor (if possible)
  - winner
-### overview of heuristics
+### Overview of heuristics
 - eo:
 - e1:
 - e2:
