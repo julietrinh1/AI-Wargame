@@ -240,6 +240,12 @@ class Stats:
     evaluations_per_depth : dict[int,int] = field(default_factory=dict) #stores the number of evaluations performed at each search depth in the game tree
     total_seconds: float = 0.0
 
+    def increment_evaluations(self, depth: int):
+        """Increment the number of evaluations for a specific depth."""
+        if depth in self.evaluations_per_depth:
+            self.evaluations_per_depth[depth] += 1
+        else:
+            self.evaluations_per_depth[depth] = 1
 ##############################################################################################################
 class Heuristics:
     @staticmethod
@@ -774,6 +780,7 @@ class Game:
                 if success:
                      # Recur with the child node, reducing depth, and switching player
                     child_score, _ = child_node.minimax(depth - 1, False, start_time)
+                    self.stats.increment_evaluations(depth)  # Increment evaluation count
                     if child_score > max_score:
                         max_score = child_score # Update max_score if a better move is found
                         best_move = move
@@ -814,6 +821,7 @@ class Game:
                 if success:
                      # Recur with the child node, reducing depth, and switching player
                     child_score, _ = child_node.alpha_beta( depth - 1, alpha, beta, False, start_time)
+                    self.stats.increment_evaluations(depth)  # Increment evaluation count
                     if child_score > max_score:
                         max_score = child_score
                         best_move = move
