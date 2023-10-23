@@ -779,6 +779,8 @@ class Game:
             output_file.write(f"({cumulative_percentage:.1f}%) ")
         print()
         
+        print(f"Cumulative Evals: {total_evals:.1f}")
+
         if self.stats.total_seconds > 0:
             # Calculate and print average branching factor
             average_branching_factor = total_evals / (self.options.max_depth + 1)
