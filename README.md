@@ -29,9 +29,9 @@
  - branching factor (if possible)
  - winner
 ### Overview of heuristics
-- eo:
-- e1:
-- e2:
+- eo: Heuristic e0 evaluates the game state by considering the unit counts for different types (Virus, Tech, Firewall, Program, and AI) of both the current player and the opponent, with a strong penalty for AI units, to determine the overall game situation.
+- e1: Heuristic e1 assesses the game state based on factors such as the number of alive units and total health for both players, with a special focus on Tech units on the Attacker side by giving a healing component to prioritize healing actions.
+- e2: Heuristic e2 evaluates the game state by calculating the number of safe moves available to the player, focusing on the player's ability to make moves without putting their units in immediate danger.
 # Members
 - Fatema Akther (40177866)
 - Julie Trinh (40175335)
