@@ -794,6 +794,7 @@ class Game:
             # Calculate and print evaluation performance
             eval_performance = total_evals / (self.stats.total_seconds * 1000)
             print(f"Eval perf.: {eval_performance:.1f}k/s")
+            output_file.write(f"Eval perf.: {eval_performance:.1f}k/s" + "\n")
         print(f"Elapsed time: {elapsed_seconds:0.1f}s")
         output_file.write(f"Elapsed time: {elapsed_seconds:0.1f}s" + "\n")
 
