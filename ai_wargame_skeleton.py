@@ -240,6 +240,13 @@ class Stats:
     evaluations_per_depth : dict[int,int] = field(default_factory=dict) #stores the number of evaluations performed at each search depth in the game tree
     total_seconds: float = 0.0
 
+    def update_evaluation(self, depth: int):
+        """
+        Update the evaluations_per_depth dictionary to keep track of the
+        number of evaluations performed at each depth.
+        """
+        self.evaluations_per_depth[depth] = self.evaluations_per_depth.get(depth, 0) + 1
+
 ##############################################################################################################
 class Heuristics:
     @staticmethod
@@ -754,6 +761,7 @@ class Game:
         # Base case: if reached maximum depth or game is finished, evaluate the node
         if depth == 0 or self.is_finished():
             score = self.options.heuristic(self, self.next_player)  # Evaluate the current game state
+            self.stats.update_evaluation(depth)  # update depth
             return score, None
 
         move_candidates = list(self.move_candidates()) # Get available moves
@@ -794,6 +802,7 @@ class Game:
          # Base case: if reached maximum depth or game is finished, evaluate the node
         if depth == 0 or self.is_finished(): 
             score = self.options.heuristic(self, self.next_player) # Evaluate the current game state
+            self.stats.update_evaluation(depth)  # update depth
             return score, None  # Return the score and no move (leaf node)
 
         move_candidates = list(self.move_candidates())
