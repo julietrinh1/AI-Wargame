@@ -464,17 +464,18 @@ class Game:
         src_unit = self.get(coords.src)
         dst_unit = self.get(coords.dst)
 
-        if src_unit.player != self.next_player:
-            return False
+
         if self.is_empty(coords.src) is True: #if src is empty, false
             return False
+        if src_unit.player != self.next_player:
+            return False       
         if src_unit == dst_unit: #if source and dest are same , true
             return True
-        
+
         return False
     
     #destroys self destructed and inflict -2 damage to surrounding
-    def perform_self_destruction(self, src_coord: Coord):
+    def perform_self_destruction(self, src_coord: Coord) -> int:
         source = self.get(src_coord)
         if source is not None:  # Check if source is not None
             self.mod_health(src_coord, -source.health)
@@ -524,19 +525,22 @@ class Game:
             number_damages = self.perform_self_destruction(coords.src)
             if is_final:
                 print(f"{src_unit.player.name} self-destruct at {coords.src}") 
+                output_file.write(f"{src_unit.player.name} self-destruct at {coords.src}" + "\n")
                 print(f"self-destructed for {number_damages} total damages")
+                output_file.write(f"self-destructed for {number_damages} total damages" + "\n")
             #output_file.write(f"{src_unit.player.name} self-destruct at {coords.src}" + "\n")
-            self.perform_self_destruction(coords.src)
+            #self.perform_self_destruction(coords.src)
             return True, "Self destruction successful"
         if self.is_valid_attack(coords):
             self.perform_combat(coords.src, coords.dst)
             if is_final:
                 print(f"{src_unit.player.name} attacks from {coords.src} to {coords.dst}")
+                output_file.write(f"{src_unit.player.name} attacks from {coords.src} to {coords.dst}" + "\n")
             return True, "Attack successful"
         elif self.is_valid_move(coords):
             if is_final:
                 print(f"{src_unit.player.name} move from {coords.src} to {coords.dst}")
-            #output_file.write(f"{src_unit.player.name} move from {coords.src} to {coords.dst}" + "\n")
+                output_file.write(f"{src_unit.player.name} move from {coords.src} to {coords.dst}" + "\n")
             self.set(coords.dst, self.get(coords.src))  # set new coords
             self.set(coords.src, None)  # empty source
             return True, "Move successful"
@@ -616,6 +620,7 @@ class Game:
                 return coords
             else:
                 print('Invalid coordinates! Try again.')
+                output_file.write("Invalid coordinates! Try again.")
     
     def human_turn(self):
         """Human player plays a move (or get via broker)."""
@@ -643,6 +648,7 @@ class Game:
                 else:
                     print("The move is not valid! Try again.")
 
+
     def computer_turn(self) -> CoordPair | None:
         """Computer plays a move."""
         mv = self.suggest_move()
@@ -656,7 +662,6 @@ class Game:
                     alternative_mv = self.choose_alternative_move(src_unit)
                     if alternative_mv is not None:
                         mv = alternative_mv
-
             (success, result) = self.perform_move(mv, is_final=True)
             if success:
                 print(f"Computer {self.next_player.name}: ", end='')
@@ -746,6 +751,7 @@ class Game:
         elapsed_seconds = (time.time() - start_time)
         self.stats.total_seconds += elapsed_seconds
         print(f"Heuristic score: {score}")
+        output_file.write(f"Heuristic score: {score}" + "\n")
         print(f"Elapsed time: {elapsed_seconds:0.1f}s")
         print(f"Evals per depth: ",end='')
         for k in sorted(self.stats.evaluations_per_depth.keys()):
@@ -755,6 +761,7 @@ class Game:
         if self.stats.total_seconds > 0:
             print(f"Eval perf.: {total_evals/self.stats.total_seconds/1000:0.1f}k/s")
         print(f"Elapsed time: {elapsed_seconds:0.1f}s")
+        output_file.write(f"Elapsed time: {elapsed_seconds:0.1f}s" + "\n")
         return move
     
     def minimax(self, depth: int, maximizing_player: bool, start_time: datetime) -> Tuple[int, CoordPair | None]:
