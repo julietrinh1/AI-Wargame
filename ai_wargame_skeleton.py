@@ -633,12 +633,13 @@ class Game:
         """Read a move from keyboard and return as a CoordPair."""
         while True:
             s = input(F'Player {self.next_player.name}, enter your move: ')
+            output_file.write(f"The move entered is {s}" + "\n")
             coords = CoordPair.from_string(s)
             if coords is not None and self.is_valid_coord(coords.src) and self.is_valid_coord(coords.dst):
                 return coords
             else:
                 print('Invalid coordinates! Try again.')
-                output_file.write("Invalid coordinates! Try again.")
+
     
     def human_turn(self):
         """Human player plays a move (or get via broker)."""
@@ -665,6 +666,7 @@ class Game:
                     break
                 else:
                     print("The move is not valid! Try again.")
+                    output_file.write("The move is not valid! Try again." + "\n")
 
 
     def computer_turn(self) -> CoordPair | None:
