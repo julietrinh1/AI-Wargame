@@ -776,17 +776,18 @@ class Game:
         
         for depth, evals in sorted(self.stats.evaluations_per_depth.items()):
             print(f"{depth}={evals} ", end='')
+            output_file.write(f"{depth}={evals} ")
             # Calculate and print cumulative percentage evaluations by depth
             cumulative_percentage = (evals / total_evals) * 100
             print(f"({cumulative_percentage:.1f}%) ", end='')
-
+            output_file.write(f"({cumulative_percentage:.1f}%) ")
         print()
         
         if self.stats.total_seconds > 0:
             # Calculate and print average branching factor
             average_branching_factor = total_evals / (self.options.max_depth + 1)
             print(f"Average branching factor: {average_branching_factor:.1f}")
-            output_file.write(f"Average branching factor: {average_branching_factor:.1f}" + "\n")
+            output_file.write("\n"+f"Average branching factor: {average_branching_factor:.1f}" + "\n")
 
             # Calculate and print evaluation performance
             eval_performance = total_evals / (self.stats.total_seconds * 1000)
