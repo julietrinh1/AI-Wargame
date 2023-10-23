@@ -312,24 +312,6 @@ class Heuristics:
         else:
             safe_moves = len(game.get_safe_defender_moves())
         return safe_moves
-    
-    def heuristic_e3(self, state):
-        """
-        Heuristic that prioritizes healing. The score is higher when the AI's units are healthier.
-        Adjust the weightings as needed to balance this with other factors you want to consider in your heuristic.
-        """
-        score = 0
-        # Assuming you have a way to get all units
-        for unit in state.get_all_units():
-            # Assuming units have methods to get current and max health
-            health_ratio = unit.get_current_health() / unit.get_max_health()
-            score += health_ratio
-
-            # Add conditions to give extra score for units that need healing
-            if unit.get_current_health() < unit.get_max_health() and unit.can_heal():
-                score += 10  # Adjust this value as needed to give appropriate weight to healing
-
-        return score    
 
 ##############################################################################################################
 
