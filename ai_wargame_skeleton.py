@@ -286,8 +286,20 @@ class Heuristics:
         # The total health of alive units for the defender player
         defender_health = sum(unit.health for _, unit in game.player_units(Player.Defender) if unit.is_alive())
 
-        # The heuristic value is a weighted sum of unit count and total health difference
-        return 2 * (attacker_units - defender_units) + 0.5 * (attacker_health - defender_health)
+        # Initialize a healing component
+        healing_component = 0
+
+        # If the current player is Attacker (Tech), prioritize healing units
+        if player == Player.Attacker:
+            for coord, unit in game.player_units(Player.Attacker):
+                if unit.type == UnitType.Tech:
+                    # Calculate the healing potential of the Tech unit
+                    healing_potential = unit.healing_amount()
+                    # Add the healing potential to the healing component
+                    healing_component += healing_potential
+
+        # The heuristic value is a weighted sum of unit count, total health difference, and healing component
+        return 2 * (attacker_units - defender_units) + 0.5 * (attacker_health - defender_health) + 0.5 * healing_component
 
     @staticmethod
     def e2(game, player):
