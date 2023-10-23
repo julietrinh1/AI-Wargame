@@ -1,0 +1,1053 @@
+Options(dim=5, max_depth=3, min_depth=2, max_time=5.0, game_type=<GameType.CompVsComp: 3>, alpha_beta=False, max_turns=100, randomize_moves=True, broker=None, heuristic=<function Heuristics.e0 at 0x0000015B9404A8E0>)
+Next player: Attacker
+Turns played: 0
+
+    0   1   2   3   4  
+A: dA9 dT9 dF9  .   .  
+B: dT9 dP9  .   .   .  
+C: dF9  .   .   .  aP9 
+D:  .   .   .  aF9 aV9 
+E:  .   .  aP9 aV9 aA9 
+
+####################################
+Heuristic score: -9999
+0=1450 (99.2%) 1=11 (0.8%) 2=1 (0.1%) 
+Average branching factor: 365.5
+Eval perf.: 4.7k/s
+Elapsed time: 0.3s
+Attacker move from C4 to B4
+Next player: Defender
+Turns played: 1
+
+    0   1   2   3   4  
+A: dA9 dT9 dF9  .   .  
+B: dT9 dP9  .   .  aP9 
+C: dF9  .   .   .   .  
+D:  .   .   .  aF9 aV9 
+E:  .   .  aP9 aV9 aA9 
+
+####################################
+Heuristic score: -9999
+0=2897 (99.2%) 1=22 (0.8%) 2=2 (0.1%) 
+Average branching factor: 730.2
+Eval perf.: 4.6k/s
+Elapsed time: 0.3s
+Defender move from A2 to B2
+Next player: Attacker
+Turns played: 2
+
+    0   1   2   3   4  
+A: dA9 dT9  .   .   .  
+B: dT9 dP9 dF9  .  aP9 
+C: dF9  .   .   .   .  
+D:  .   .   .  aF9 aV9 
+E:  .   .  aP9 aV9 aA9 
+
+####################################
+Heuristic score: -9999
+0=4683 (99.2%) 1=34 (0.7%) 2=3 (0.1%) 
+Average branching factor: 1180.0
+Eval perf.: 4.6k/s
+Elapsed time: 0.4s
+Attacker move from B4 to A4
+Next player: Defender
+Turns played: 3
+
+    0   1   2   3   4  
+A: dA9 dT9  .   .  aP9 
+B: dT9 dP9 dF9  .   .  
+C: dF9  .   .   .   .  
+D:  .   .   .  aF9 aV9 
+E:  .   .  aP9 aV9 aA9 
+
+####################################
+Heuristic score: -9999
+0=6202 (99.2%) 1=45 (0.7%) 2=4 (0.1%) 
+Average branching factor: 1562.8
+Eval perf.: 4.6k/s
+Elapsed time: 0.3s
+Defender move from C0 to C1
+Next player: Attacker
+Turns played: 4
+
+    0   1   2   3   4  
+A: dA9 dT9  .   .  aP9 
+B: dT9 dP9 dF9  .   .  
+C:  .  dF9  .   .   .  
+D:  .   .   .  aF9 aV9 
+E:  .   .  aP9 aV9 aA9 
+
+####################################
+Heuristic score: -9999
+0=7694 (99.2%) 1=56 (0.7%) 2=5 (0.1%) 
+Average branching factor: 1938.8
+Eval perf.: 4.6k/s
+Elapsed time: 0.3s
+Attacker move from A4 to A3
+Next player: Defender
+Turns played: 5
+
+    0   1   2   3   4  
+A: dA9 dT9  .  aP9  .  
+B: dT9 dP9 dF9  .   .  
+C:  .  dF9  .   .   .  
+D:  .   .   .  aF9 aV9 
+E:  .   .  aP9 aV9 aA9 
+
+####################################
+Heuristic score: -9999
+0=9243 (99.2%) 1=67 (0.7%) 2=6 (0.1%) 
+Average branching factor: 2329.0
+Eval perf.: 4.6k/s
+Elapsed time: 0.3s
+Defender move from C1 to C2
+Next player: Attacker
+Turns played: 6
+
+    0   1   2   3   4  
+A: dA9 dT9  .  aP9  .  
+B: dT9 dP9 dF9  .   .  
+C:  .   .  dF9  .   .  
+D:  .   .   .  aF9 aV9 
+E:  .   .  aP9 aV9 aA9 
+
+####################################
+Heuristic score: -9999
+0=10676 (99.2%) 1=78 (0.7%) 2=7 (0.1%) 
+Average branching factor: 2690.2
+Eval perf.: 4.6k/s
+Elapsed time: 0.3s
+Attacker move from A3 to A2
+Next player: Defender
+Turns played: 7
+
+    0   1   2   3   4  
+A: dA9 dT9 aP9  .   .  
+B: dT9 dP9 dF9  .   .  
+C:  .   .  dF9  .   .  
+D:  .   .   .  aF9 aV9 
+E:  .   .  aP9 aV9 aA9 
+
+####################################
+Heuristic score: -9999
+0=12421 (99.2%) 1=91 (0.7%) 2=8 (0.1%) 
+Average branching factor: 3130.0
+Eval perf.: 4.6k/s
+Elapsed time: 0.4s
+Defender move from B0 to C0
+Next player: Attacker
+Turns played: 8
+
+    0   1   2   3   4  
+A: dA9 dT9 aP9  .   .  
+B:  .  dP9 dF9  .   .  
+C: dT9  .  dF9  .   .  
+D:  .   .   .  aF9 aV9 
+E:  .   .  aP9 aV9 aA9 
+
+####################################
+Heuristic score: -9999
+0=14205 (99.2%) 1=103 (0.7%) 2=9 (0.1%) 
+Average branching factor: 3579.2
+Eval perf.: 4.6k/s
+Elapsed time: 0.4s
+Attacker attacks from A2 to A1
+Next player: Defender
+Turns played: 9
+
+    0   1   2   3   4  
+A: dA9 dT6 aP8  .   .  
+B:  .  dP9 dF9  .   .  
+C: dT9  .  dF9  .   .  
+D:  .   .   .  aF9 aV9 
+E:  .   .  aP9 aV9 aA9 
+
+####################################
+Heuristic score: -9999
+0=17120 (99.3%) 1=119 (0.7%) 2=10 (0.1%) 
+Average branching factor: 4312.2
+Eval perf.: 4.6k/s
+Elapsed time: 0.6s
+Defender move from A0 to B0
+Next player: Attacker
+Turns played: 10
+
+    0   1   2   3   4  
+A:  .  dT6 aP8  .   .  
+B: dA9 dP9 dF9  .   .  
+C: dT9  .  dF9  .   .  
+D:  .   .   .  aF9 aV9 
+E:  .   .  aP9 aV9 aA9 
+
+####################################
+Heuristic score: -9999
+0=18903 (99.3%) 1=131 (0.7%) 2=11 (0.1%) 
+Average branching factor: 4761.2
+Eval perf.: 4.6k/s
+Elapsed time: 0.4s
+Attacker attacks from A2 to A1
+Next player: Defender
+Turns played: 11
+
+    0   1   2   3   4  
+A:  .  dT3 aP7  .   .  
+B: dA9 dP9 dF9  .   .  
+C: dT9  .  dF9  .   .  
+D:  .   .   .  aF9 aV9 
+E:  .   .  aP9 aV9 aA9 
+
+####################################
+Heuristic score: -9999
+0=21379 (99.3%) 1=146 (0.7%) 2=12 (0.1%) 
+Average branching factor: 5384.2
+Eval perf.: 4.6k/s
+Elapsed time: 0.5s
+Defender move from A1 to A0
+Next player: Attacker
+Turns played: 12
+
+    0   1   2   3   4  
+A: dT3  .  aP7  .   .  
+B: dA9 dP9 dF9  .   .  
+C: dT9  .  dF9  .   .  
+D:  .   .   .  aF9 aV9 
+E:  .   .  aP9 aV9 aA9 
+
+####################################
+Heuristic score: -9999
+0=22780 (99.3%) 1=157 (0.7%) 2=13 (0.1%) 
+Average branching factor: 5737.5
+Eval perf.: 4.6k/s
+Elapsed time: 0.3s
+Attacker attacks from A2 to B2
+Next player: Defender
+Turns played: 13
+
+    0   1   2   3   4  
+A: dT3  .  aP6  .   .  
+B: dA9 dP9 dF8  .   .  
+C: dT9  .  dF9  .   .  
+D:  .   .   .  aF9 aV9 
+E:  .   .  aP9 aV9 aA9 
+
+####################################
+Heuristic score: -9999
+0=24444 (99.3%) 1=169 (0.7%) 2=14 (0.1%) 
+Average branching factor: 6156.8
+Eval perf.: 4.6k/s
+Elapsed time: 0.4s
+Defender move from A0 to A1
+Next player: Attacker
+Turns played: 14
+
+    0   1   2   3   4  
+A:  .  dT3 aP6  .   .  
+B: dA9 dP9 dF8  .   .  
+C: dT9  .  dF9  .   .  
+D:  .   .   .  aF9 aV9 
+E:  .   .  aP9 aV9 aA9 
+
+####################################
+Heuristic score: -9996
+0=26195 (99.3%) 1=181 (0.7%) 2=15 (0.1%) 
+Average branching factor: 6597.8
+Eval perf.: 4.6k/s
+Elapsed time: 0.4s
+Attacker attacks from A2 to A1
+Next player: Defender
+Turns played: 15
+
+    0   1   2   3   4  
+A:  .   .  aP5  .   .  
+B: dA9 dP9 dF8  .   .  
+C: dT9  .  dF9  .   .  
+D:  .   .   .  aF9 aV9 
+E:  .   .  aP9 aV9 aA9 
+
+####################################
+Heuristic score: -10002
+0=27151 (99.2%) 1=191 (0.7%) 2=16 (0.1%) 
+Average branching factor: 6839.5
+Eval perf.: 4.6k/s
+Elapsed time: 0.2s
+Defender move from C0 to D0
+Next player: Attacker
+Turns played: 16
+
+    0   1   2   3   4  
+A:  .   .  aP5  .   .  
+B: dA9 dP9 dF8  .   .  
+C:  .   .  dF9  .   .  
+D: dT9  .   .  aF9 aV9 
+E:  .   .  aP9 aV9 aA9 
+
+####################################
+Heuristic score: -9996
+0=28551 (99.2%) 1=202 (0.7%) 2=17 (0.1%) 
+Average branching factor: 7192.5
+Eval perf.: 4.6k/s
+Elapsed time: 0.3s
+Attacker attacks from A2 to B2
+Next player: Defender
+Turns played: 17
+
+    0   1   2   3   4  
+A:  .   .  aP4  .   .  
+B: dA9 dP9 dF7  .   .  
+C:  .   .  dF9  .   .  
+D: dT9  .   .  aF9 aV9 
+E:  .   .  aP9 aV9 aA9 
+
+####################################
+Heuristic score: -10002
+0=30035 (99.2%) 1=214 (0.7%) 2=18 (0.1%) 
+Average branching factor: 7566.8
+Eval perf.: 4.6k/s
+Elapsed time: 0.3s
+Defender move from B0 to C0
+Next player: Attacker
+Turns played: 18
+
+    0   1   2   3   4  
+A:  .   .  aP4  .   .  
+B:  .  dP9 dF7  .   .  
+C: dA9  .  dF9  .   .  
+D: dT9  .   .  aF9 aV9 
+E:  .   .  aP9 aV9 aA9 
+
+####################################
+Heuristic score: -9996
+0=31435 (99.2%) 1=225 (0.7%) 2=19 (0.1%) 
+Average branching factor: 7919.8
+Eval perf.: 4.6k/s
+Elapsed time: 0.3s
+Attacker attacks from A2 to B2
+Next player: Defender
+Turns played: 19
+
+    0   1   2   3   4  
+A:  .   .  aP3  .   .  
+B:  .  dP9 dF6  .   .  
+C: dA9  .  dF9  .   .  
+D: dT9  .   .  aF9 aV9 
+E:  .   .  aP9 aV9 aA9 
+
+####################################
+Heuristic score: -10002
+0=32686 (99.2%) 1=236 (0.7%) 2=20 (0.1%) 
+Average branching factor: 8235.5
+Eval perf.: 4.6k/s
+Elapsed time: 0.3s
+Defender move from B1 to C1
+Next player: Attacker
+Turns played: 20
+
+    0   1   2   3   4  
+A:  .   .  aP3  .   .  
+B:  .   .  dF6  .   .  
+C: dA9 dP9 dF9  .   .  
+D: dT9  .   .  aF9 aV9 
+E:  .   .  aP9 aV9 aA9 
+
+####################################
+Heuristic score: -9996
+0=34087 (99.2%) 1=247 (0.7%) 2=21 (0.1%) 
+Average branching factor: 8588.8
+Eval perf.: 4.6k/s
+Elapsed time: 0.3s
+Attacker attacks from A2 to B2
+Next player: Defender
+Turns played: 21
+
+    0   1   2   3   4  
+A:  .   .  aP2  .   .  
+B:  .   .  dF5  .   .  
+C: dA9 dP9 dF9  .   .  
+D: dT9  .   .  aF9 aV9 
+E:  .   .  aP9 aV9 aA9 
+
+####################################
+Heuristic score: -10002
+0=35094 (99.2%) 1=257 (0.7%) 2=22 (0.1%) 
+Average branching factor: 8843.2
+Eval perf.: 4.6k/s
+Elapsed time: 0.2s
+Defender attacks from B2 to A2
+Next player: Attacker
+Turns played: 22
+
+    0   1   2   3   4  
+A:  .   .  aP1  .   .  
+B:  .   .  dF4  .   .  
+C: dA9 dP9 dF9  .   .  
+D: dT9  .   .  aF9 aV9 
+E:  .   .  aP9 aV9 aA9 
+
+####################################
+Heuristic score: -9996
+0=36437 (99.2%) 1=268 (0.7%) 2=23 (0.1%) 
+Average branching factor: 9182.0
+Eval perf.: 4.6k/s
+Elapsed time: 0.3s
+Attacker move from D3 to C3
+Next player: Defender
+Turns played: 23
+
+    0   1   2   3   4  
+A:  .   .  aP1  .   .  
+B:  .   .  dF4  .   .  
+C: dA9 dP9 dF9 aF9  .  
+D: dT9  .   .   .  aV9 
+E:  .   .  aP9 aV9 aA9 
+
+####################################
+Heuristic score: -9999
+0=37172 (99.2%) 1=277 (0.7%) 2=24 (0.1%) 
+Average branching factor: 9368.2
+Eval perf.: 4.6k/s
+Elapsed time: 0.2s
+Defender attacks from B2 to A2
+Next player: Attacker
+Turns played: 24
+
+    0   1   2   3   4  
+A:  .   .   .   .   .  
+B:  .   .  dF3  .   .  
+C: dA9 dP9 dF9 aF9  .  
+D: dT9  .   .   .  aV9 
+E:  .   .  aP9 aV9 aA9 
+
+####################################
+Heuristic score: -9999
+0=38242 (99.2%) 1=287 (0.7%) 2=25 (0.1%) 
+Average branching factor: 9638.5
+Eval perf.: 4.6k/s
+Elapsed time: 0.2s
+Attacker attacks from C3 to C2
+Next player: Defender
+Turns played: 25
+
+    0   1   2   3   4  
+A:  .   .   .   .   .  
+B:  .   .  dF3  .   .  
+C: dA9 dP9 dF8 aF8  .  
+D: dT9  .   .   .  aV9 
+E:  .   .  aP9 aV9 aA9 
+
+####################################
+Heuristic score: -9999
+0=38992 (99.2%) 1=296 (0.8%) 2=26 (0.1%) 
+Average branching factor: 9828.5
+Eval perf.: 4.6k/s
+Elapsed time: 0.2s
+Defender move from B2 to B3
+Next player: Attacker
+Turns played: 26
+
+    0   1   2   3   4  
+A:  .   .   .   .   .  
+B:  .   .   .  dF3  .  
+C: dA9 dP9 dF8 aF8  .  
+D: dT9  .   .   .  aV9 
+E:  .   .  aP9 aV9 aA9 
+
+####################################
+Heuristic score: -9999
+0=40386 (99.2%) 1=307 (0.8%) 2=27 (0.1%) 
+Average branching factor: 10180.0
+Eval perf.: 4.6k/s
+Elapsed time: 0.3s
+Attacker attacks from C3 to B3
+Next player: Defender
+Turns played: 27
+
+    0   1   2   3   4  
+A:  .   .   .   .   .  
+B:  .   .   .  dF2  .  
+C: dA9 dP9 dF8 aF7  .  
+D: dT9  .   .   .  aV9 
+E:  .   .  aP9 aV9 aA9 
+
+####################################
+Heuristic score: -9999
+0=41079 (99.2%) 1=316 (0.8%) 2=28 (0.1%) 
+Average branching factor: 10355.8
+Eval perf.: 4.6k/s
+Elapsed time: 0.2s
+Defender attacks from B3 to C3
+Next player: Attacker
+Turns played: 28
+
+    0   1   2   3   4  
+A:  .   .   .   .   .  
+B:  .   .   .  dF1  .  
+C: dA9 dP9 dF8 aF6  .  
+D: dT9  .   .   .  aV9 
+E:  .   .  aP9 aV9 aA9 
+
+####################################
+Heuristic score: -9996
+0=42442 (99.2%) 1=327 (0.8%) 2=29 (0.1%) 
+Average branching factor: 10699.5
+Eval perf.: 4.7k/s
+Elapsed time: 0.3s
+Attacker attacks from C3 to B3
+Next player: Defender
+Turns played: 29
+
+    0   1   2   3   4  
+A:  .   .   .   .   .  
+B:  .   .   .   .   .  
+C: dA9 dP9 dF8 aF5  .  
+D: dT9  .   .   .  aV9 
+E:  .   .  aP9 aV9 aA9 
+
+####################################
+Heuristic score: -10002
+0=42817 (99.2%) 1=334 (0.8%) 2=30 (0.1%) 
+Average branching factor: 10795.2
+Eval perf.: 4.7k/s
+Elapsed time: 0.1s
+Defender move from D0 to E0
+Next player: Attacker
+Turns played: 30
+
+    0   1   2   3   4  
+A:  .   .   .   .   .  
+B:  .   .   .   .   .  
+C: dA9 dP9 dF8 aF5  .  
+D:  .   .   .   .  aV9 
+E: dT9  .  aP9 aV9 aA9 
+
+####################################
+Heuristic score: -9996
+0=43860 (99.2%) 1=344 (0.8%) 2=31 (0.1%) 
+Average branching factor: 11058.8
+Eval perf.: 4.7k/s
+Elapsed time: 0.2s
+Attacker attacks from C3 to C2
+Next player: Defender
+Turns played: 31
+
+    0   1   2   3   4  
+A:  .   .   .   .   .  
+B:  .   .   .   .   .  
+C: dA9 dP9 dF7 aF4  .  
+D:  .   .   .   .  aV9 
+E: dT9  .  aP9 aV9 aA9 
+
+####################################
+Heuristic score: -10002
+0=44343 (99.1%) 1=352 (0.8%) 2=32 (0.1%) 
+Average branching factor: 11181.8
+Eval perf.: 4.7k/s
+Elapsed time: 0.1s
+Defender move from C0 to D0
+Next player: Attacker
+Turns played: 32
+
+    0   1   2   3   4  
+A:  .   .   .   .   .  
+B:  .   .   .   .   .  
+C:  .  dP9 dF7 aF4  .  
+D: dA9  .   .   .  aV9 
+E: dT9  .  aP9 aV9 aA9 
+
+####################################
+Heuristic score: -9996
+0=45386 (99.1%) 1=362 (0.8%) 2=33 (0.1%) 
+Average branching factor: 11445.2
+Eval perf.: 4.7k/s
+Elapsed time: 0.2s
+Attacker attacks from C3 to C2
+Next player: Defender
+Turns played: 33
+
+    0   1   2   3   4  
+A:  .   .   .   .   .  
+B:  .   .   .   .   .  
+C:  .  dP9 dF6 aF3  .  
+D: dA9  .   .   .  aV9 
+E: dT9  .  aP9 aV9 aA9 
+
+####################################
+Heuristic score: -10002
+0=45756 (99.1%) 1=369 (0.8%) 2=34 (0.1%) 
+Average branching factor: 11539.8
+Eval perf.: 4.7k/s
+Elapsed time: 0.1s
+Defender move from C1 to D1
+Next player: Attacker
+Turns played: 34
+
+    0   1   2   3   4  
+A:  .   .   .   .   .  
+B:  .   .   .   .   .  
+C:  .   .  dF6 aF3  .  
+D: dA9 dP9  .   .  aV9 
+E: dT9  .  aP9 aV9 aA9 
+
+####################################
+Heuristic score: -9996
+0=46851 (99.1%) 1=379 (0.8%) 2=35 (0.1%) 
+Average branching factor: 11816.2
+Eval perf.: 4.7k/s
+Elapsed time: 0.2s
+Attacker attacks from C3 to C2
+Next player: Defender
+Turns played: 35
+
+    0   1   2   3   4  
+A:  .   .   .   .   .  
+B:  .   .   .   .   .  
+C:  .   .  dF5 aF2  .  
+D: dA9 dP9  .   .  aV9 
+E: dT9  .  aP9 aV9 aA9 
+
+####################################
+Heuristic score: -10002
+0=47163 (99.1%) 1=386 (0.8%) 2=36 (0.1%) 
+Average branching factor: 11896.2
+Eval perf.: 4.7k/s
+Elapsed time: 0.1s
+Defender attacks from C2 to C3
+Next player: Attacker
+Turns played: 36
+
+    0   1   2   3   4  
+A:  .   .   .   .   .  
+B:  .   .   .   .   .  
+C:  .   .  dF4 aF1  .  
+D: dA9 dP9  .   .  aV9 
+E: dT9  .  aP9 aV9 aA9 
+
+####################################
+Heuristic score: -9996
+0=48169 (99.1%) 1=396 (0.8%) 2=37 (0.1%) 
+Average branching factor: 12150.5
+Eval perf.: 4.7k/s
+Elapsed time: 0.2s
+Attacker move from D4 to C4
+Next player: Defender
+Turns played: 37
+
+    0   1   2   3   4  
+A:  .   .   .   .   .  
+B:  .   .   .   .   .  
+C:  .   .  dF4 aF1 aV9 
+D: dA9 dP9  .   .   .  
+E: dT9  .  aP9 aV9 aA9 
+
+####################################
+Heuristic score: -9999
+0=48495 (99.1%) 1=403 (0.8%) 2=38 (0.1%) 
+Average branching factor: 12234.0
+Eval perf.: 4.7k/s
+Elapsed time: 0.1s
+Defender attacks from C2 to C3
+Next player: Attacker
+Turns played: 38
+
+    0   1   2   3   4  
+A:  .   .   .   .   .  
+B:  .   .   .   .   .  
+C:  .   .  dF3  .  aV9 
+D: dA9 dP9  .   .   .  
+E: dT9  .  aP9 aV9 aA9 
+
+####################################
+Heuristic score: -9999
+0=49552 (99.1%) 1=413 (0.8%) 2=39 (0.1%) 
+Average branching factor: 12501.0
+Eval perf.: 4.7k/s
+Elapsed time: 0.2s
+Attacker move from C4 to B4
+Next player: Defender
+Turns played: 39
+
+    0   1   2   3   4  
+A:  .   .   .   .   .  
+B:  .   .   .   .  aV9 
+C:  .   .  dF3  .   .  
+D: dA9 dP9  .   .   .  
+E: dT9  .  aP9 aV9 aA9 
+
+####################################
+Heuristic score: -9999
+0=49963 (99.1%) 1=421 (0.8%) 2=40 (0.1%) 
+Average branching factor: 12606.0
+Eval perf.: 4.7k/s
+Elapsed time: 0.1s
+Defender move from C2 to D2
+Next player: Attacker
+Turns played: 40
+
+    0   1   2   3   4  
+A:  .   .   .   .   .  
+B:  .   .   .   .  aV9 
+C:  .   .   .   .   .  
+D: dA9 dP9 dF3  .   .  
+E: dT9  .  aP9 aV9 aA9 
+
+####################################
+Heuristic score: -9999
+0=50772 (99.1%) 1=430 (0.8%) 2=41 (0.1%) 
+Average branching factor: 12810.8
+Eval perf.: 4.7k/s
+Elapsed time: 0.2s
+Attacker move from B4 to A4
+Next player: Defender
+Turns played: 41
+
+    0   1   2   3   4  
+A:  .   .   .   .  aV9 
+B:  .   .   .   .   .  
+C:  .   .   .   .   .  
+D: dA9 dP9 dF3  .   .  
+E: dT9  .  aP9 aV9 aA9 
+
+####################################
+Heuristic score: -9999
+0=50985 (99.1%) 1=436 (0.8%) 2=42 (0.1%) 
+Average branching factor: 12865.8
+Eval perf.: 4.7k/s
+Elapsed time: 0.0s
+Defender move from D1 to E1
+Next player: Attacker
+Turns played: 42
+
+    0   1   2   3   4  
+A:  .   .   .   .  aV9 
+B:  .   .   .   .   .  
+C:  .   .   .   .   .  
+D: dA9  .  dF3  .   .  
+E: dT9 dP9 aP9 aV9 aA9 
+
+####################################
+Heuristic score: -9999
+0=51841 (99.1%) 1=445 (0.9%) 2=43 (0.1%) 
+Average branching factor: 13082.2
+Eval perf.: 4.7k/s
+Elapsed time: 0.2s
+Attacker move from A4 to A3
+Next player: Defender
+Turns played: 43
+
+    0   1   2   3   4  
+A:  .   .   .  aV9  .  
+B:  .   .   .   .   .  
+C:  .   .   .   .   .  
+D: dA9  .  dF3  .   .  
+E: dT9 dP9 aP9 aV9 aA9 
+
+####################################
+Heuristic score: -9999
+0=52040 (99.1%) 1=451 (0.9%) 2=44 (0.1%) 
+Average branching factor: 13133.8
+Eval perf.: 4.7k/s
+Elapsed time: 0.0s
+Defender move from D0 to D1
+Next player: Attacker
+Turns played: 44
+
+    0   1   2   3   4  
+A:  .   .   .  aV9  .  
+B:  .   .   .   .   .  
+C:  .   .   .   .   .  
+D:  .  dA9 dF3  .   .  
+E: dT9 dP9 aP9 aV9 aA9 
+
+####################################
+Heuristic score: -9999
+0=53116 (99.1%) 1=461 (0.9%) 2=45 (0.1%) 
+Average branching factor: 13405.5
+Eval perf.: 4.7k/s
+Elapsed time: 0.2s
+Attacker move from A3 to A2
+Next player: Defender
+Turns played: 45
+
+    0   1   2   3   4  
+A:  .   .  aV9  .   .  
+B:  .   .   .   .   .  
+C:  .   .   .   .   .  
+D:  .  dA9 dF3  .   .  
+E: dT9 dP9 aP9 aV9 aA9 
+
+####################################
+Heuristic score: -9999
+0=53328 (99.0%) 1=467 (0.9%) 2=46 (0.1%) 
+Average branching factor: 13460.2
+Eval perf.: 4.7k/s
+Elapsed time: 0.0s
+Defender attacks from D2 to E2
+Next player: Attacker
+Turns played: 46
+
+    0   1   2   3   4  
+A:  .   .  aV9  .   .  
+B:  .   .   .   .   .  
+C:  .   .   .   .   .  
+D:  .  dA9 dF2  .   .  
+E: dT9 dP9 aP8 aV9 aA9 
+
+####################################
+Heuristic score: -9999
+0=54403 (99.0%) 1=477 (0.9%) 2=47 (0.1%) 
+Average branching factor: 13731.8
+Eval perf.: 4.7k/s
+Elapsed time: 0.2s
+Attacker move from A2 to A1
+Next player: Defender
+Turns played: 47
+
+    0   1   2   3   4  
+A:  .  aV9  .   .   .  
+B:  .   .   .   .   .  
+C:  .   .   .   .   .  
+D:  .  dA9 dF2  .   .  
+E: dT9 dP9 aP8 aV9 aA9 
+
+####################################
+Heuristic score: -10002
+0=54599 (99.0%) 1=483 (0.9%) 2=48 (0.1%) 
+Average branching factor: 13782.5
+Eval perf.: 4.7k/s
+Elapsed time: 0.0s
+Defender move from E0 to D0
+Next player: Attacker
+Turns played: 48
+
+    0   1   2   3   4  
+A:  .  aV9  .   .   .  
+B:  .   .   .   .   .  
+C:  .   .   .   .   .  
+D: dT9 dA9 dF2  .   .  
+E:  .  dP9 aP8 aV9 aA9 
+
+####################################
+Heuristic score: -9999
+0=55651 (99.0%) 1=493 (0.9%) 2=49 (0.1%) 
+Average branching factor: 14048.2
+Eval perf.: 4.7k/s
+Elapsed time: 0.2s
+Attacker move from A1 to A0
+Next player: Defender
+Turns played: 49
+
+    0   1   2   3   4  
+A: aV9  .   .   .   .  
+B:  .   .   .   .   .  
+C:  .   .   .   .   .  
+D: dT9 dA9 dF2  .   .  
+E:  .  dP9 aP8 aV9 aA9 
+
+####################################
+Heuristic score: -10002
+0=55937 (99.0%) 1=500 (0.9%) 2=50 (0.1%) 
+Average branching factor: 14121.8
+Eval perf.: 4.7k/s
+Elapsed time: 0.1s
+Defender move from D0 to C0
+Next player: Attacker
+Turns played: 50
+
+    0   1   2   3   4  
+A: aV9  .   .   .   .  
+B:  .   .   .   .   .  
+C: dT9  .   .   .   .  
+D:  .  dA9 dF2  .   .  
+E:  .  dP9 aP8 aV9 aA9 
+
+####################################
+Heuristic score: -9999
+0=56772 (99.0%) 1=509 (0.9%) 2=51 (0.1%) 
+Average branching factor: 14333.0
+Eval perf.: 4.7k/s
+Elapsed time: 0.2s
+Attacker move from A0 to B0
+Next player: Defender
+Turns played: 51
+
+    0   1   2   3   4  
+A:  .   .   .   .   .  
+B: aV9  .   .   .   .  
+C: dT9  .   .   .   .  
+D:  .  dA9 dF2  .   .  
+E:  .  dP9 aP8 aV9 aA9 
+
+####################################
+Heuristic score: -10002
+0=57176 (99.0%) 1=517 (0.9%) 2=52 (0.1%) 
+Average branching factor: 14436.2
+Eval perf.: 4.7k/s
+Elapsed time: 0.1s
+Defender attacks from C0 to B0
+Next player: Attacker
+Turns played: 52
+
+    0   1   2   3   4  
+A:  .   .   .   .   .  
+B: aV3  .   .   .   .  
+C: dT3  .   .   .   .  
+D:  .  dA9 dF2  .   .  
+E:  .  dP9 aP8 aV9 aA9 
+
+####################################
+Heuristic score: -9999
+0=58139 (99.0%) 1=527 (0.9%) 2=53 (0.1%) 
+Average branching factor: 14679.8
+Eval perf.: 4.8k/s
+Elapsed time: 0.2s
+Attacker move from B0 to A0
+Next player: Defender
+Turns played: 53
+
+    0   1   2   3   4  
+A: aV3  .   .   .   .  
+B:  .   .   .   .   .  
+C: dT3  .   .   .   .  
+D:  .  dA9 dF2  .   .  
+E:  .  dP9 aP8 aV9 aA9 
+
+####################################
+Heuristic score: -10002
+0=58545 (99.0%) 1=535 (0.9%) 2=54 (0.1%) 
+Average branching factor: 14783.5
+Eval perf.: 4.8k/s
+Elapsed time: 0.1s
+Defender move from C0 to B0
+Next player: Attacker
+Turns played: 54
+
+    0   1   2   3   4  
+A: aV3  .   .   .   .  
+B: dT3  .   .   .   .  
+C:  .   .   .   .   .  
+D:  .  dA9 dF2  .   .  
+E:  .  dP9 aP8 aV9 aA9 
+
+####################################
+Heuristic score: -9999
+0=59292 (99.0%) 1=544 (0.9%) 2=55 (0.1%) 
+Average branching factor: 14972.8
+Eval perf.: 4.8k/s
+Elapsed time: 0.1s
+Attacker attacks from A0 to B0
+Next player: Defender
+Turns played: 55
+
+    0   1   2   3   4  
+A:  .   .   .   .   .  
+B:  .   .   .   .   .  
+C:  .   .   .   .   .  
+D:  .  dA9 dF2  .   .  
+E:  .  dP9 aP8 aV9 aA9 
+
+####################################
+Heuristic score: -10002
+0=59340 (99.0%) 1=548 (0.9%) 2=56 (0.1%) 
+Average branching factor: 14986.0
+Eval perf.: 4.8k/s
+Elapsed time: 0.0s
+Defender attacks from E1 to E2
+Next player: Attacker
+Turns played: 56
+
+    0   1   2   3   4  
+A:  .   .   .   .   .  
+B:  .   .   .   .   .  
+C:  .   .   .   .   .  
+D:  .  dA9 dF2  .   .  
+E:  .  dP6 aP5 aV9 aA9 
+
+####################################
+Heuristic score: -9999
+0=59615 (99.0%) 1=554 (0.9%) 2=57 (0.1%) 
+Average branching factor: 15056.5
+Eval perf.: 4.8k/s
+Elapsed time: 0.1s
+Attacker attacks from E2 to D2
+Next player: Defender
+Turns played: 57
+
+    0   1   2   3   4  
+A:  .   .   .   .   .  
+B:  .   .   .   .   .  
+C:  .   .   .   .   .  
+D:  .  dA9 dF1  .   .  
+E:  .  dP6 aP4 aV9 aA9 
+
+####################################
+Heuristic score: -9999
+0=59657 (99.0%) 1=558 (0.9%) 2=58 (0.1%) 
+Average branching factor: 15068.2
+Eval perf.: 4.8k/s
+Elapsed time: 0.0s
+Defender self-destruct at D2
+self-destructed for 8 total damages
+Next player: Attacker
+Turns played: 58
+
+    0   1   2   3   4  
+A:  .   .   .   .   .  
+B:  .   .   .   .   .  
+C:  .   .   .   .   .  
+D:  .  dA7  .   .   .  
+E:  .  dP4 aP2 aV7 aA9 
+
+####################################
+Heuristic score: -9996
+0=59826 (99.0%) 1=563 (0.9%) 2=59 (0.1%) 
+Average branching factor: 15112.0
+Eval perf.: 4.8k/s
+Elapsed time: 0.0s
+Attacker move from E3 to D3
+Next player: Defender
+Turns played: 59
+
+    0   1   2   3   4  
+A:  .   .   .   .   .  
+B:  .   .   .   .   .  
+C:  .   .   .   .   .  
+D:  .  dA7  .  aV7  .  
+E:  .  dP4 aP2  .  aA9 
+
+####################################
+Heuristic score: -9999
+0=59852 (99.0%) 1=567 (0.9%) 2=60 (0.1%) 
+Average branching factor: 15119.8
+Eval perf.: 4.8k/s
+Elapsed time: 0.0s
+Defender move from D1 to D2
+Next player: Attacker
+Turns played: 60
+
+    0   1   2   3   4  
+A:  .   .   .   .   .  
+B:  .   .   .   .   .  
+C:  .   .   .   .   .  
+D:  .   .  dA7 aV7  .  
+E:  .  dP4 aP2  .  aA9 
+
+####################################
+Heuristic score: 10002
+0=60232 (98.9%) 1=581 (1.0%) 2=62 (0.1%) 
+Average branching factor: 15218.8
+Eval perf.: 4.8k/s
+Elapsed time: 0.1s
+Attacker attacks from D3 to D2
+Next player: Defender
+Turns played: 61
+
+    0   1   2   3   4  
+A:  .   .   .   .   .  
+B:  .   .   .   .   .  
+C:  .   .   .   .   .  
+D:  .   .   .  aV4  .  
+E:  .  dP4 aP2  .  aA9 
+
+####################################
+Attacker wins in 61 turns
+Value of Timeout (s): 5.0 seconds
+Maximum number of turns: 100
