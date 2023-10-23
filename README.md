@@ -6,7 +6,8 @@ In this game there are four play modes:
  - ai vs ai 
 <br/>
 Before the game begins, it will prompt users to choose a play mode, the maximum time for a turn, the maximum number of turns, a heuristic if an ai-player is playing, a search algorithm for the ai-player to use, and a depth for the search the ai-player will use.
- <br/>Players can do the following actions:
+ <br/>
+ Players can do the following actions:
  - movement
  - attack
  - repair
