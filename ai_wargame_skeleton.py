@@ -667,7 +667,7 @@ class Game:
         """Computer plays a move."""
         mv = self.suggest_move()  # Get the recommended move for the computer.
 
-        if mv is not None: #if a move is suggested retrrieve
+        if mv is not None: #if a move is suggested retrieve
             src_unit = self.get(mv.src)
             # If there's a unit at the source and it's of type AI:
             if src_unit is not None and src_unit.type == UnitType.AI:
@@ -752,9 +752,9 @@ class Game:
         else:
             return (0, None, 0)
 
-    def suggest_move(self) -> CoordPair | None:
+    def suggest_move(self) -> CoordPair | None: # move recommendation for the computer player based on the game's current state
         start_time = time.time() # Track the start time to calculate elapsed time later.
-        depth = self.options.max_depth
+        depth = self.options.max_depth #max depth 
 
         if self.options.alpha_beta: # Use either alpha-beta pruning or minimax based on AI options.
             (score, move) = self.alpha_beta(depth, MIN_HEURISTIC_SCORE, MAX_HEURISTIC_SCORE, True, start_time)
@@ -935,7 +935,7 @@ class Game:
         return None
 
     def get_safe_attacker_moves(self):
-        safe_moves = []
+        safe_moves = [] #initialize list
         for move in self.move_candidates():
             if not self.is_valid_self_destruction(move):
                 # Check if the move results in an attack
@@ -947,8 +947,7 @@ class Game:
                 # Check if the move results in a regular move
                 elif self.is_valid_move(move):
                     safe_moves.append(move)
-                # Add other criteria for safe moves specific to your game
-
+                
         return safe_moves
 
     def get_safe_defender_moves(self):
@@ -961,8 +960,7 @@ class Game:
                 # Check if the move results in a regular move
                 elif self.is_valid_move(move):
                     safe_moves.append(move)
-                # Add other criteria for safe moves specific to your game
-
+                
         return safe_moves
 ##############################################################################################################
 
