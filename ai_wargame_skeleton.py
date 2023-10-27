@@ -230,7 +230,7 @@ class Options:
     max_turns : int | None = 100
     randomize_moves : bool = True
     broker : str | None = None
-    heuristic: str | None = None  # Add the heuristic argument
+    heuristic: str | None = None  # Add the heuristic option
 
 ##############################################################################################################
 
@@ -498,7 +498,7 @@ class Game:
                     number_damages = number_damages + 2
                     self.mod_health(dst, -2)
                     self.remove_dead(dst)
-
+        # Check if the self-destructing unit is of type AI and determine if the game should end.
         if source == UnitType.AI:
             self.is_finished()
 
@@ -533,9 +533,9 @@ class Game:
 
     def perform_move(self, coords: CoordPair, is_final=False) -> Tuple[bool, str]:
         src_unit = self.get(coords.src)
-        if self.is_valid_self_destruction(coords):
+        if self.is_valid_self_destruction(coords): # Check if the action is a valid self-destruction.
             number_damages = self.perform_self_destruction(coords.src)
-            if is_final:
+            if is_final:# If this is a final move, log the self-destruction action.
                 print(f"{src_unit.player.name} self-destruct at {coords.src}") 
                 output_file.write(f"{src_unit.player.name} self-destruct at {coords.src}" + "\n")
                 print(f"self-destructed for {number_damages} total damages")
@@ -543,23 +543,23 @@ class Game:
             #output_file.write(f"{src_unit.player.name} self-destruct at {coords.src}" + "\n")
             #self.perform_self_destruction(coords.src)
             return True, "Self destruction successful"
-        if self.is_valid_attack(coords):
+        if self.is_valid_attack(coords):  # Check if the action is a valid attack.
             self.perform_combat(coords.src, coords.dst)
-            if is_final:
+            if is_final: # If this is a final move, log the attack action.
                 print(f"{src_unit.player.name} attacks from {coords.src} to {coords.dst}")
                 output_file.write(f"{src_unit.player.name} attacks from {coords.src} to {coords.dst}" + "\n")
             return True, "Attack successful"
-        elif self.is_valid_move(coords):
-            if is_final:
+        elif self.is_valid_move(coords):   # Check if the action is a valid move.
+            if is_final: # If this is a final move, log the move action.
                 print(f"{src_unit.player.name} move from {coords.src} to {coords.dst}")
                 output_file.write(f"{src_unit.player.name} move from {coords.src} to {coords.dst}" + "\n")
             self.set(coords.dst, self.get(coords.src))  # set new coords
             self.set(coords.src, None)  # empty source
             return True, "Move successful"
-        elif self.is_valid_repair(coords):
+        elif self.is_valid_repair(coords):# Check if the action is a valid repair.
             success, result = self.repair_unit(coords.src, coords.dst)  # stores result
             return success, result
-        return False, "Invalid move"
+        return False, "Invalid move"  # If none of the above actions are valid, it's an invalid move.
 
 
     # Add this method to check if a repair action is valid
@@ -665,23 +665,23 @@ class Game:
 
     def computer_turn(self) -> CoordPair | None:
         """Computer plays a move."""
-        mv = self.suggest_move()
+        mv = self.suggest_move()  # Get the recommended move for the computer.
 
-        if mv is not None:
+        if mv is not None: #if a move is suggested retrrieve
             src_unit = self.get(mv.src)
-
+            # If there's a unit at the source and it's of type AI:
             if src_unit is not None and src_unit.type == UnitType.AI:
-                if self.is_valid_self_destruction(mv):
+                if self.is_valid_self_destruction(mv): # Check if the suggested move is to self-destruct.
                     # Handle the AI's decision here, e.g., choose an alternative move or do nothing
                     alternative_mv = self.choose_alternative_move(src_unit)
-                    if alternative_mv is not None:
+                    if alternative_mv is not None: # If an alternative move is chosen, replace the suggested move.
                         mv = alternative_mv
-            (success, result) = self.perform_move(mv, is_final=True)
+            (success, result) = self.perform_move(mv, is_final=True) #perform selected move
             if success:
                 print(f"Computer {self.next_player.name}: ", end='')
                 print(result)
                 self.next_turn()
-        return mv
+        return mv # Return the move made by the computer.
 
     def choose_alternative_move(self, src_unit) -> CoordPair | None:
         # Get the list of available move candidates for the AI
@@ -753,16 +753,16 @@ class Game:
             return (0, None, 0)
 
     def suggest_move(self) -> CoordPair | None:
-        start_time = time.time()
+        start_time = time.time() # Track the start time to calculate elapsed time later.
         depth = self.options.max_depth
 
-        if self.options.alpha_beta:
+        if self.options.alpha_beta: # Use either alpha-beta pruning or minimax based on AI options.
             (score, move) = self.alpha_beta(depth, MIN_HEURISTIC_SCORE, MAX_HEURISTIC_SCORE, True, start_time)
         else:
             (score, move) = self.minimax(self.options.max_depth, True, start_time)
 
-        elapsed_seconds = (time.time() - start_time)
-        self.stats.total_seconds += elapsed_seconds
+        elapsed_seconds = (time.time() - start_time) # Calculate the time taken for the move suggestion.
+        self.stats.total_seconds += elapsed_seconds # Update the cumulative time stats.
         print(f"Heuristic score: {score}")
         output_file.write(f"Heuristic score: {score}" + "\n")
         print(f"Elapsed time: {elapsed_seconds:0.1f}s")
@@ -780,7 +780,7 @@ class Game:
         print()
         
         print(f"Cumulative Evals: {total_evals:.1f}")
-
+        # If any time has passed, calculate and display the average branching factor and evaluation performance.
         if self.stats.total_seconds > 0:
             # Calculate and print average branching factor
             average_branching_factor = total_evals / (self.options.max_depth + 1)
@@ -794,7 +794,7 @@ class Game:
         print(f"Elapsed time: {elapsed_seconds:0.1f}s")
         output_file.write(f"Elapsed time: {elapsed_seconds:0.1f}s" + "\n")
 
-        return move
+        return move # Return the best move determined by the AI.
 
     
     def minimax(self, depth: int, maximizing_player: bool, start_time: datetime) -> Tuple[int, CoordPair | None]:
@@ -807,13 +807,13 @@ class Game:
         move_candidates = list(self.move_candidates()) # Get available moves
 
         if maximizing_player:
-            max_score = MIN_HEURISTIC_SCORE
-            best_move = None
+            max_score = MIN_HEURISTIC_SCORE # Initialize to the minimum possible value
+            best_move = None # No best move yet
             for move in move_candidates:
                 child_node = self.clone() # Create a clone of the current game
                 (success, _) = child_node.perform_move(move, is_final=False) 
                 if success:
-                     # Recur with the child node, reducing depth, and switching player
+                     # Recursively evaluate the resulting position, reducing depth, and switching player
                     child_score, _ = child_node.minimax(depth - 1, False, start_time)
                     if child_score > max_score:
                         max_score = child_score # Update max_score if a better move is found
@@ -823,14 +823,14 @@ class Game:
                         break  # Timeout, interrupt the search
             return max_score, best_move
         else:
-            min_score = MAX_HEURISTIC_SCORE
+            min_score = MAX_HEURISTIC_SCORE # Initialize to the maximum possible value
             best_move = None
             for move in move_candidates:
                 child_node = self.clone()
                 (success, _) = child_node.perform_move(move, is_final=False)
-                if success:
+                if success:  # Recursively evaluate the resulting position for the maximizing player
                     child_score, _ = child_node.minimax(depth - 1, True, start_time)
-                    if child_score < min_score:
+                    if child_score < min_score: # Update the best move and score if this move is better
                         min_score = child_score
                         best_move = move
                     elapsed_time =  time.time() - start_time
@@ -877,7 +877,7 @@ class Game:
                     if child_score < min_score:
                         min_score = child_score
                         best_move = move
-                    beta = min(beta, min_score)
+                    beta = min(beta, min_score) # Update the best value for minimizing player
                     elapsed_time =  time.time() - start_time
                     if elapsed_time > self.options.max_time:
                         break  # Timeout, interrupt the search
