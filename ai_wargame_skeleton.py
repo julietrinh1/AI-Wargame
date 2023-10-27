@@ -776,10 +776,11 @@ class Game:
             # Calculate and print cumulative percentage evaluations by depth
             cumulative_percentage = (evals / total_evals) * 100
             print(f"({cumulative_percentage:.1f}%) ", end='')
-            output_file.write(f"({cumulative_percentage:.1f}%) ")
+            output_file.write(f"({cumulative_percentage:.1f}%) "+ "\n")
         print()
         
         print(f"Cumulative Evals: {total_evals:.1f}")
+        output_file.write(f"Cumulative Evals: {total_evals:.1f}")
         # If any time has passed, calculate and display the average branching factor and evaluation performance.
         if self.stats.total_seconds > 0:
             # Calculate and print average branching factor
